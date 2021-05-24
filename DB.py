@@ -50,6 +50,21 @@ class FamilyTreeDB:
         )
         self.db.commit()
 
+    def add_person(self):
+        pass
+
+    def add_parents(self):
+        pass
+
+    def add_tree(self):
+        pass
+
+    def create_tree_person_relation(self):
+        pass
+
+    def create_tree_user_relation(self):
+        pass
+
 
 def main():
     db = FamilyTreeDB()
