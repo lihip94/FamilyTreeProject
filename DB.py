@@ -65,6 +65,36 @@ class FamilyTreeDB:
     def create_tree_user_relation(self):
         pass
 
+    def delete_user(self):
+        pass
+
+    def delete_person(self):
+        pass
+
+    def delete_tree(self):
+        pass
+
+    def remove_tree_person_relation(self):
+        pass
+
+    def remove_tree_user_relation(self):
+        pass
+
+    def get_user(self):
+        pass
+
+    def get_person(self):
+        pass
+
+    def get_tree(self):
+        pass
+
+    def get_tree_person_relation(self):
+        pass
+
+    def get_tree_user_relation(self):
+        pass
+
 
 def main():
     db = FamilyTreeDB()
