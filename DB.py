@@ -1,8 +1,16 @@
 import mysql.connector
 
+USERS_TABLE = "users"
+PERSON_TABLE = "person"
+RELATION_TABLE = "relation"
+TREE_TABLE = "tree"
+ROOT_TABLE = "root"
+CONNECTION_TABLE = "connection"
+
 
 class FamilyTreeDB:
     def __init__(self):
+        # singleton function or connection pool
         self.db = mysql.connector.connect(
             host="localhost",
             user="root",
@@ -12,41 +20,56 @@ class FamilyTreeDB:
         self.cursor = self.db.cursor()
 
     def create_tables(self):
+        create_command = "CREATE TABLE IF NOT EXISTS {table_name} ({params})"
         # create users table
         self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS users (id int PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50), password int)"
+            create_command.format(USERS_TABLE,
+                                  "id int PRIMARY KEY AUTO_INCREMENT, "
+                                  "name VARCHAR(50), "
+                                  "password int")
         )
 
         # create person table
         self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS person(id int PRIMARY KEY, first_name VARCHAR(50),"
-            " last_name VARCHAR(50), gender ENUM('M', 'F'))"
+            create_command.format(PERSON_TABLE,
+                                  "id int PRIMARY KEY, "
+                                  "first_name VARCHAR(50), "
+                                  "last_name VARCHAR(50), "
+                                  "gender ENUM('M', 'F')")
         )
 
         # create person-parents-relation table
         self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS relation (person_id int PRIMARY KEY,"
-            " mother_id int, father_id int)"
+            create_command.format(RELATION_TABLE,
+                                  "person_id int PRIMARY KEY, "
+                                  "mother_id int,"
+                                  "father_id int")
         )
 
         # create tree table ( the name of the the is the last name of the family members )
         self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS tree (id int PRIMARY KEY AUTO_INCREMENT, name VARCHAR(50))"
+            create_command.format(TREE_TABLE,
+                                  "id int PRIMARY KEY AUTO_INCREMENT, "
+                                  "name VARCHAR(50)")
         )
 
         # create tree-person-relation table
         self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS root (tree_id int PRIMARY KEY, person_id int)"
+            create_command.format(ROOT_TABLE,
+                                  "tree_id int PRIMARY KEY,"
+                                  " person_id int")
         )
 
         # create tree-user-relation table
         self.cursor.execute(
-            "CREATE TABLE IF NOT EXISTS connection (tree_id int PRIMARY KEY, user_id int)"
+            create_command.format(CONNECTION_TABLE,
+                                  "tree_id int PRIMARY KEY, "
+                                  "user_id int")
         )
 
-    def add_user(self,name, password):
+    def add_user(self, name, password):
         self.cursor.execute(
-            "INSERT INTO users(name, password) VALUES (%s,%s)", (name, password)
+            "INSERT INTO " + USERS_TABLE + "(name, password) VALUES (%s,%s)", (name, password)
         )
         self.db.commit()
 
@@ -56,7 +79,7 @@ class FamilyTreeDB:
     def add_parents(self):
         pass
 
-    def add_tree(self):
+    def add_tree(self, name):
         pass
 
     def create_tree_person_relation(self):
@@ -86,7 +109,7 @@ class FamilyTreeDB:
     def get_person(self):
         pass
 
-    def get_tree(self):
+    def get_tree(self, name, user):
         pass
 
     def get_tree_person_relation(self):
@@ -99,7 +122,7 @@ class FamilyTreeDB:
 def main():
     db = FamilyTreeDB()
     db.create_tables()
-    db.add_user("Lihi", 123456)
+    db.add_user("Liat", 2345)
     # db.cursor.execute("SELECT * FROM users")
     # for x in db.cursor:
     #     print(x)
