@@ -1,11 +1,21 @@
 import mysql.connector
 
+FAMILY_TREE_DB = "familytreedb"
 USERS_TABLE = "users"
 PERSON_TABLE = "person"
 RELATION_TABLE = "relation"
 TREE_TABLE = "tree"
 ROOT_TABLE = "root"
 CONNECTION_TABLE = "connection"
+
+
+class Table:
+    def __init__(self, name, attributes):
+        self.name = USERS_TABLE
+        self.attr_list = attributes
+
+    def attr_to_string(self):
+        return ', '.join(self.attr_list)
 
 
 class FamilyTreeDB:
@@ -18,6 +28,16 @@ class FamilyTreeDB:
             database="familytreedb"
         )
         self.cursor = self.db.cursor()
+        self.users = Table(USERS_TABLE, ["id int PRIMARY KEY AUTO_INCREMENT","name VARCHAR(50)", "password int"])
+        self.person = Table()
+        self.relation = Table()
+        self.tree = Table()
+        self.connection = Table()
+
+    # temp - not in use
+    def create_table(self):
+        create_command = "CREATE TABLE IF NOT EXISTS {table_name} ({params})"
+        return self.cursor.execute(create_command.format(self.users.name, self.users.attr_to_string()))
 
     def create_tables(self):
         create_command = "CREATE TABLE IF NOT EXISTS {table_name} ({params})"
@@ -73,20 +93,40 @@ class FamilyTreeDB:
         )
         self.db.commit()
 
-    def add_person(self):
-        pass
+    def add_person(self, person_id, first_name, last_name, gender):
+        self.cursor.execute(
+            "INSERT INTO " + PERSON_TABLE + "(id, first_name, last_name, gender) VALUES (%s,%s,%s,%s)",
+            (person_id, first_name, last_name, gender)
+        )
+        self.db.commit()
 
-    def add_parents(self):
-        pass
+    def add_parents(self, person_id, mother_id, father_id):
+        self.cursor.execute(
+            "INSERT INTO " + RELATION_TABLE + "(person_id, mother_id, father_id) VALUES (%s,%s,%s)",
+            (person_id, mother_id, father_id)
+        )
+        self.db.commit()
 
-    def add_tree(self, name):
-        pass
+    def add_tree(self, tree_id, name):
+        self.cursor.execute(
+            "INSERT INTO " + RELATION_TABLE + "(id, name) VALUES (%s,%s)",
+            (tree_id, name)
+        )
+        self.db.commit()
 
-    def create_tree_person_relation(self):
-        pass
+    def create_tree_person_relation(self, tree_id, person_id):
+        self.cursor.execute(
+            "INSERT INTO " + ROOT_TABLE + "(tree_id, person_id) VALUES (%s,%s)",
+            (tree_id, person_id)
+        )
+        self.db.commit()
 
-    def create_tree_user_relation(self):
-        pass
+    def create_tree_user_relation(self, tree_id, user_id):
+        self.cursor.execute(
+            "INSERT INTO " + CONNECTION_TABLE + "(tree_id, user_id) VALUES (%s,%s)",
+            (tree_id, user_id)
+        )
+        self.db.commit()
 
     def delete_user(self):
         pass
