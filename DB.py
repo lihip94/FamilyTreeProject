@@ -1,21 +1,7 @@
 import mysql.connector
+from tables import *
 
 FAMILY_TREE_DB = "familytreedb"
-USERS_TABLE = "users"
-PERSON_TABLE = "person"
-RELATION_TABLE = "relation"
-TREE_TABLE = "tree"
-ROOT_TABLE = "root"
-CONNECTION_TABLE = "connection"
-
-
-class Table:
-    def __init__(self, name, attributes):
-        self.name = USERS_TABLE
-        self.attr_list = attributes
-
-    def attr_to_string(self):
-        return ', '.join(self.attr_list)
 
 
 class FamilyTreeDB:
@@ -28,141 +14,66 @@ class FamilyTreeDB:
             database="familytreedb"
         )
         self.cursor = self.db.cursor()
-        self.users = Table(USERS_TABLE, ["id int PRIMARY KEY AUTO_INCREMENT","name VARCHAR(50)", "password int"])
-        self.person = Table()
-        self.relation = Table()
-        self.tree = Table()
-        self.connection = Table()
-
-    # temp - not in use
-    def create_table(self):
-        create_command = "CREATE TABLE IF NOT EXISTS {table_name} ({params})"
-        return self.cursor.execute(create_command.format(self.users.name, self.users.attr_to_string()))
+        self.users = Users()
+        self.person = Person()
+        self.relation = Relation()
+        self.tree = Tree()
+        self.root = Root()
+        self.connection = Connection()
 
     def create_tables(self):
-        create_command = "CREATE TABLE IF NOT EXISTS {table_name} ({params})"
+        create_command = "CREATE TABLE IF NOT EXISTS {} ({})"
         # create users table
-        self.cursor.execute(
-            create_command.format(USERS_TABLE,
-                                  "id int PRIMARY KEY AUTO_INCREMENT, "
-                                  "name VARCHAR(50), "
-                                  "password int")
-        )
+        self.cursor.execute(create_command.format(self.users.name, self.users.attr_to_string()))
 
         # create person table
-        self.cursor.execute(
-            create_command.format(PERSON_TABLE,
-                                  "id int PRIMARY KEY, "
-                                  "first_name VARCHAR(50), "
-                                  "last_name VARCHAR(50), "
-                                  "gender ENUM('M', 'F')")
-        )
+        self.cursor.execute(create_command.format(self.person.name, self.person.attr_to_string()))
 
         # create person-parents-relation table
-        self.cursor.execute(
-            create_command.format(RELATION_TABLE,
-                                  "person_id int PRIMARY KEY, "
-                                  "mother_id int,"
-                                  "father_id int")
-        )
+        self.cursor.execute(create_command.format(self.relation.name, self.relation.attr_to_string()))
 
         # create tree table ( the name of the the is the last name of the family members )
-        self.cursor.execute(
-            create_command.format(TREE_TABLE,
-                                  "id int PRIMARY KEY AUTO_INCREMENT, "
-                                  "name VARCHAR(50)")
-        )
+        self.cursor.execute(create_command.format(self.tree.name, self.tree.attr_to_string()))
 
         # create tree-person-relation table
-        self.cursor.execute(
-            create_command.format(ROOT_TABLE,
-                                  "tree_id int PRIMARY KEY,"
-                                  " person_id int")
-        )
+        self.cursor.execute(create_command.format(self.root.name, self.root.attr_to_string()))
 
         # create tree-user-relation table
-        self.cursor.execute(
-            create_command.format(CONNECTION_TABLE,
-                                  "tree_id int PRIMARY KEY, "
-                                  "user_id int")
-        )
+        self.cursor.execute(create_command.format(self.connection.name, self.connection.attr_to_string()))
 
-    def add_user(self, name, password):
-        self.cursor.execute(
-            "INSERT INTO " + USERS_TABLE + "(name, password) VALUES (%s,%s)", (name, password)
-        )
         self.db.commit()
 
-    def add_person(self, person_id, first_name, last_name, gender):
-        self.cursor.execute(
-            "INSERT INTO " + PERSON_TABLE + "(id, first_name, last_name, gender) VALUES (%s,%s,%s,%s)",
-            (person_id, first_name, last_name, gender)
-        )
+    def find_table(self, table_name):
+        if table_name == self.users:
+            return self.users
+        elif table_name == self.person:
+            return self.person
+        elif table_name == self.relation:
+            return self.relation
+        elif table_name == self.tree:
+            return self.tree
+        elif table_name == self.root:
+            return self.root
+        elif table_name == self.connection:
+            return self.connection
+
+    def add_to_table(self, table_name, body):
+        add_command = "INSERT INTO {} ({}) VALUES ({})"
+        table = self.find_table(table_name)
+        self.cursor.execute(add_command.format(table.name, table.attr_to_string(), table.num_of_attr()), body)
         self.db.commit()
 
-    def add_parents(self, person_id, mother_id, father_id):
-        self.cursor.execute(
-            "INSERT INTO " + RELATION_TABLE + "(person_id, mother_id, father_id) VALUES (%s,%s,%s)",
-            (person_id, mother_id, father_id)
-        )
-        self.db.commit()
-
-    def add_tree(self, tree_id, name):
-        self.cursor.execute(
-            "INSERT INTO " + RELATION_TABLE + "(id, name) VALUES (%s,%s)",
-            (tree_id, name)
-        )
-        self.db.commit()
-
-    def create_tree_person_relation(self, tree_id, person_id):
-        self.cursor.execute(
-            "INSERT INTO " + ROOT_TABLE + "(tree_id, person_id) VALUES (%s,%s)",
-            (tree_id, person_id)
-        )
-        self.db.commit()
-
-    def create_tree_user_relation(self, tree_id, user_id):
-        self.cursor.execute(
-            "INSERT INTO " + CONNECTION_TABLE + "(tree_id, user_id) VALUES (%s,%s)",
-            (tree_id, user_id)
-        )
-        self.db.commit()
-
-    def delete_user(self):
+    def delete_from_table(self, table_name):
         pass
 
-    def delete_person(self):
-        pass
-
-    def delete_tree(self):
-        pass
-
-    def remove_tree_person_relation(self):
-        pass
-
-    def remove_tree_user_relation(self):
-        pass
-
-    def get_user(self):
-        pass
-
-    def get_person(self):
-        pass
-
-    def get_tree(self, name, user):
-        pass
-
-    def get_tree_person_relation(self):
-        pass
-
-    def get_tree_user_relation(self):
-        pass
+    def get_table_content(self, table_name):
+        self.cursor.execute("SELECT * " + table_name)
 
 
 def main():
     db = FamilyTreeDB()
     db.create_tables()
-    db.add_user("Liat", 2345)
+    #db.add_user("Liat", 2345)
     # db.cursor.execute("SELECT * FROM users")
     # for x in db.cursor:
     #     print(x)
