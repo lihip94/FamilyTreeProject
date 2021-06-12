@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, redirect
 
 from service import *
 
@@ -11,10 +11,13 @@ def land():
     return "<h1>Landing page<h1>"
 
 
-@app.route("/home")
+@app.route("/home", methods=['POST', 'GET'])
 def home():
     """Home page"""
-    return "<h1>Home Page<h1>"
+    if request.method == 'POST':
+        if user_login(request.form['username']):
+            return render_template('home.html')
+    return render_template('login.html')
 
 
 @app.route("/login", methods=['POST', 'GET'])
@@ -22,7 +25,7 @@ def login():
     """Log in page"""
     if request.method == 'POST':
         if valid_login(request.form['email'], request.form['password']):
-            return render_template('home.html')
+            return redirect("home")
         else:
             return render_template('error.html')
     else:
@@ -32,7 +35,15 @@ def login():
 @app.route("/signup", methods=['POST', 'GET'])
 def signup():
     """Sign in page"""
-    return "<h1>Sign Up Page<h1>"
+    email = request.form['email']
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    password = request.form['last_name']
+    details = [email, first_name, last_name, password]
+    if request.method == 'POST':
+        if success_signup(details):
+            pass
+    return render_template('signup.html')
 
 
 @app.route("/add_new_person", methods=['POST'])
