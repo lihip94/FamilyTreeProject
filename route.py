@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, request
 
-import service
+from service import *
 
 app = Flask(__name__)
 
@@ -21,33 +21,36 @@ def home():
 def login():
     """Log in page"""
     if request.method == 'POST':
-        return "<h1>Temp page - login<h1>"
+        if valid_login(request.form['email'], request.form['password']):
+            return render_template('home.html')
+        else:
+            return render_template('error.html')
     else:
         return render_template('login.html')
 
 
-@app.route("/signup")
+@app.route("/signup", methods=['POST', 'GET'])
 def signup():
     """Sign in page"""
     return "<h1>Sign Up Page<h1>"
 
-# parm person , post/get
-@app.route("/add_new_person")
+
+@app.route("/add_new_person", methods=['POST'])
 def add_new_person():
     """add new person page"""
     return "<h1>Add New Person Page<h1>"
 
 
-@app.route("/get_table")
+@app.route("/get_table", methods=['GET'])
 def get_table():
     """get table information"""
     return "<h1>Get Table Page<h1>"
 
 
-@app.route("/get_tree/<token>/<name>")
+@app.route("/get_tree", methods=['GET'])
 def get_tree(token, name):
     """get tree information"""
-    return service.get_tree(token, name)
+    return get_tree_information(token, name)
 
 
 if __name__ == "__main__":
