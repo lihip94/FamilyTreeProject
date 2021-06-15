@@ -46,21 +46,33 @@ def signup():
     return render_template('signup.html')
 
 
-@app.route("/add_new_person", methods=['POST'])
+@app.route("/add_new_person", methods=['POST', 'GET'])
 def add_new_person():
     """add new person page"""
-    return "<h1>Add New Person Page<h1>"
+    person_id = request.form['person_id']
+    mother_id = request.form['mother_id']
+    father_id = request.form['father_id']
+    details = [person_id, mother_id, father_id]
+    if request.method == 'POST':
+        # later change to try and catch
+        if add_person(details):
+            pass
+    return render_template('person.html')
 
 
 @app.route("/get_table", methods=['GET'])
 def get_table():
     """get table information"""
-    return "<h1>Get Table Page<h1>"
+    token = request.form['token']
+    name = request.form['tree_name']
+    return get_table_information(token, name)
 
 
 @app.route("/get_tree", methods=['GET'])
-def get_tree(token, name):
+def get_tree():
     """get tree information"""
+    token = request.form['token']
+    name = request.form['tree_name']
     return get_tree_information(token, name)
 
 
