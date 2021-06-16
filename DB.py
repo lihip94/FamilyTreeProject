@@ -14,7 +14,7 @@ class FamilyTreeDB:
             database="familytreedb"
         )
         self.cursor = self.db.cursor()
-        self.users = Users()
+        self.account = Account()
         self.person = Person()
         self.relation = Relation()
         self.tree = Tree()
@@ -22,24 +22,36 @@ class FamilyTreeDB:
         self.connection = Connection()
 
     def create_tables(self):
-        create_command = "CREATE TABLE IF NOT EXISTS {} ({})"
+        create_command = "CREATE TABLE IF NOT EXISTS {} ({}, {})"
         # create users table
-        self.cursor.execute(create_command.format(self.users.name, self.users.attr_to_string()))
+        self.cursor.execute(
+            create_command.format(self.account.name, self.account.attr_with_types(), self.account.primary)
+        )
 
         # create person table
-        self.cursor.execute(create_command.format(self.person.name, self.person.attr_to_string()))
+        self.cursor.execute(
+            create_command.format(self.person.name, self.person.attr_with_types(), self.person.primary)
+        )
 
         # create person-parents-relation table
-        self.cursor.execute(create_command.format(self.relation.name, self.relation.attr_to_string()))
+        self.cursor.execute(
+            create_command.format(self.relation.name, self.relation.attr_with_types(), self.relation.primary)
+        )
 
         # create tree table ( the name of the the is the last name of the family members )
-        self.cursor.execute(create_command.format(self.tree.name, self.tree.attr_to_string()))
+        self.cursor.execute(
+            create_command.format(self.tree.name, self.tree.attr_with_types(), self.tree.primary)
+        )
 
         # create tree-person-relation table
-        self.cursor.execute(create_command.format(self.root.name, self.root.attr_to_string()))
+        self.cursor.execute(
+            create_command.format(self.root.name, self.root.attr_with_types(), self.root.primary)
+        )
 
         # create tree-user-relation table
-        self.cursor.execute(create_command.format(self.connection.name, self.connection.attr_to_string()))
+        self.cursor.execute(
+            create_command.format(self.connection.name, self.connection.attr_with_types(), self.connection.primary)
+        )
 
         self.db.commit()
 
@@ -60,7 +72,7 @@ class FamilyTreeDB:
     def add_to_table(self, table_name, body):
         add_command = "INSERT INTO {} ({}) VALUES ({})"
         table = self.find_table(table_name)
-        self.cursor.execute(add_command.format(table.name, table.attr_to_string(), table.num_of_attr()), body)
+        self.cursor.execute(add_command.format(table.name, table.attr_with_types(), table.num_of_attr()), body)
         self.db.commit()
 
     def delete_from_table(self, table_name):
@@ -68,6 +80,9 @@ class FamilyTreeDB:
 
     def get_table_content(self, table_name):
         self.cursor.execute("SELECT * " + table_name)
+
+    def select_specific_from_table(self, table_name):
+        self.cursor.execute("select username from user where username=%s", a.username)
 
 
 def main():
