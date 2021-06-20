@@ -14,15 +14,13 @@ def land():
 @app.route("/home", methods=['GET'])
 def home():
     """Home page"""
-    if request.method == 'GET':
-        return is_login(request.form['username'])
+    return is_login(request.form['username'])
 
 
 @app.route("/login", methods=['POST'])
 def login():
     """Log in page"""
-    if request.method == 'POST':
-        return login(request.form['email'], request.form['password'])
+    return login(request.form['email'], request.form['password'])
 
 
 @app.route("/signup", methods=['POST'])
@@ -33,8 +31,7 @@ def signup():
     last_name = request.form['last_name']
     password = request.form['last_name']
     details = [email, first_name, last_name, password]
-    if request.method == 'POST':
-        return signup(details)
+    return signup(details)
 
 
 @app.route("/add_new_person", methods=['POST'])
@@ -44,8 +41,7 @@ def add_new_person():
     mother_id = request.form['mother_id']
     father_id = request.form['father_id']
     details = [person_id, mother_id, father_id]
-    if request.method == 'POST':
-        return add_person(details)
+    return add_person(details)
 
 
 @app.route("/get_table", methods=['GET'])
@@ -53,8 +49,7 @@ def get_table():
     """get table information"""
     token = request.form['token']
     name = request.form['tree_name']
-    if request.method == 'GET':
-        return get_table_information(token, name)
+    return get_table_information(token, name)
 
 
 @app.route("/get_tree", methods=['GET'])
@@ -62,8 +57,7 @@ def get_tree():
     """get tree information"""
     token = request.form['token']
     name = request.form['tree_name']
-    if request.method == 'GET':
-        return get_tree_information(token, name)
+    return get_tree_information(token, name)
 
 
 if __name__ == "__main__":
