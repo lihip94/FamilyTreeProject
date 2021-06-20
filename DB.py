@@ -81,8 +81,14 @@ class FamilyTreeDB:
     def get_table_content(self, table_name):
         self.cursor.execute("SELECT * " + table_name)
 
-    def select_specific_from_table(self, table_name):
-        self.cursor.execute("select username from user where username=%s", a.username)
+    def select_specific_account(self, emil_address, password):
+        self.cursor.execute("SELECT * FROM " + self.ACCOUNT_TABLE + " WHERE email = %s AND password = %s"
+                            % (emil_address, password))
+        return self.cursor.fetchall()
+
+    def update_token(self, token, email_address):
+        self.cursor.exexuteU("UPDATE " + self.ACCOUNT_TABLE + " SET token = %s WHERE email = %s",
+                             (token, email_address))
 
 
 def main():

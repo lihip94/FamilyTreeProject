@@ -29,10 +29,11 @@ class Account(Table):
     def __init__(self):
         self.name = TableName.ACCOUNT_TABLE
         self.attr = [
-            "id int(11) NOT NULL AUTO_INCREMENT",
+            "token int(11) NOT NULL AUTO_INCREMENT",
             "username VARCHAR(50) NOT NULL",
             "password VARCHAR(255) NOT NULL",
-            "email VARCHAR(100) NOT NULL"
+            "email VARCHAR(25) NOT NULL",
+            "token VARCHAR(17) NOT NULL",
         ]
         self.primary = "PRIMARY KEY (id)"
 
