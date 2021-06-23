@@ -3,16 +3,16 @@ from uuid import uuid4
 import json
 
 
-def login(email_address, password):
+def valid_login(email_address, password):
     # check in users table (select)
     data = {}
     account = FamilyTreeDB.select_specific_account(email_address, password)
     if len(account) == 1:
-        status = "Passed"
+        status = "200"
         message = "Login was successfully!"
         data = account
     else:
-        status = "Failed"
+        status = "404"
         message = "Login Failed. Something went wrong, Please try again"
     # create token (random/ hash table/ md 5)
     rand_token = uuid4()

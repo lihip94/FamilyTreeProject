@@ -20,7 +20,7 @@ def home():
 @app.route("/login", methods=['POST'])
 def login():
     """Log in page"""
-    return login(request.form['email'], request.form['password'])
+    return valid_login(request.form['email'], request.form['password'])
 
 
 @app.route("/signup", methods=['POST'])
