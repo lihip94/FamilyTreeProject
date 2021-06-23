@@ -27,6 +27,22 @@ def valid_login(email_address, password):
     return json.dumps(result)
 
 
+def valid_signup(body):
+    table_name = "account"
+    if FamilyTreeDB.account_exist(body["email"], body["username"]):
+        status = "404"
+        message = "Signup Failed. Email or username exist in the system"
+    else:
+        FamilyTreeDB.add_to_table(table_name, body)
+        status = "200"
+        message = "Signup successfully!"
+    result = {
+        "status": status,
+        "message": message,
+    }
+    return result
+
+
 def get_tree_information(token, name):
     # check token and get user_id
     # send user and name to get_tree
@@ -40,10 +56,6 @@ def get_table_information(token, name):
 
 
 def add_person(details):
-    pass
-
-
-def signup(body):
     pass
 
 

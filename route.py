@@ -27,11 +27,14 @@ def login():
 def signup():
     """Sign in page"""
     email = request.form['email']
-    first_name = request.form['first_name']
-    last_name = request.form['last_name']
-    password = request.form['last_name']
-    details = [email, first_name, last_name, password]
-    return signup(details)
+    username = request.form['username']
+    password = request.form['password']
+    details = {
+            "email": email,
+            "username": username,
+            "password": password
+    }
+    return valid_signup(details)
 
 
 @app.route("/add_new_person", methods=['POST'])

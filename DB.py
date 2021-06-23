@@ -72,7 +72,7 @@ class FamilyTreeDB:
     def add_to_table(self, table_name, body):
         add_command = "INSERT INTO {} ({}) VALUES ({})"
         table = self.find_table(table_name)
-        self.cursor.execute(add_command.format(table.name, table.attr_with_types(), table.num_of_attr()), body)
+        self.cursor.execute(add_command.format(table.name, table.only_attr(), body))
         self.db.commit()
 
     def delete_from_table(self, table_name):
@@ -85,6 +85,12 @@ class FamilyTreeDB:
         self.cursor.execute("SELECT * FROM " + self.ACCOUNT_TABLE + " WHERE email = %s AND password = %s"
                             % (emil_address, password))
         return self.cursor.fetchall()
+
+    def account_exist(self, emil_address, username):
+        if (self.cursor.execute("SELECT * FROM " + self.ACCOUNT_TABLE + " WHERE email = %s" % emil_address) > 0
+                or self.cursor.execute("SELECT * FROM " + self.ACCOUNT_TABLE + " WHERE username = %s" % username) > 0):
+            return False
+        return True
 
     def update_token(self, token, email_address):
         self.cursor.exexuteU("UPDATE " + self.ACCOUNT_TABLE + " SET token = %s WHERE email = %s",
