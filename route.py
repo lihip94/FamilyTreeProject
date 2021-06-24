@@ -20,15 +20,27 @@ def home():
 @app.route("/login", methods=['POST'])
 def login():
     """Log in page"""
-    return valid_login(request.form['email'], request.form['password'])
+    email = request.form.get['email']
+    password = request.form.get['password']
+    if email is None or password is None:
+        return {
+            "status": 404,
+            "message": "some values are missing"
+        }
+    return valid_login(email, password)
 
 
 @app.route("/signup", methods=['POST'])
 def signup():
     """Sign in page"""
-    email = request.form['email']
-    username = request.form['username']
-    password = request.form['password']
+    email = request.form.get['email']
+    username = request.form.get['username']
+    password = request.form.get['password']
+    if email is None or username is None or password is None:
+        return {
+            "status": 404,
+            "message": "some values are missing"
+        }
     details = {
             "email": email,
             "username": username,

@@ -8,11 +8,11 @@ def valid_login(email_address, password):
     data = {}
     account = FamilyTreeDB.select_specific_account(email_address, password)
     if len(account) == 1:
-        status = "200"
+        status = 200
         message = "Login was successfully!"
         data = account
     else:
-        status = "404"
+        status = 404
         message = "Login Failed. Something went wrong, Please try again"
     # create token (random/ hash table/ md 5)
     rand_token = uuid4()
@@ -30,11 +30,11 @@ def valid_login(email_address, password):
 def valid_signup(body):
     table_name = "account"
     if FamilyTreeDB.account_exist(body["email"], body["username"]):
-        status = "404"
+        status = 404
         message = "Signup Failed. Email or username exist in the system"
     else:
         FamilyTreeDB.add_to_table(table_name, body)
-        status = "200"
+        status = 200
         message = "Signup successfully!"
     result = {
         "status": status,
