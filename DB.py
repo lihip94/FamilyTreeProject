@@ -82,28 +82,33 @@ class FamilyTreeDB:
         self.cursor.execute("SELECT * " + table_name)
 
     def select_specific_account(self, emil_address, password):
-        self.cursor.execute("SELECT * FROM " + self.ACCOUNT_TABLE + " WHERE email = %s AND password = %s"
+        self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s AND password = %s"
                             % (emil_address, password))
         return self.cursor.fetchall()
 
     def account_exist(self, emil_address, username):
-        if (self.cursor.execute("SELECT * FROM " + self.ACCOUNT_TABLE + " WHERE email = %s" % emil_address) > 0
-                or self.cursor.execute("SELECT * FROM " + self.ACCOUNT_TABLE + " WHERE username = %s" % username) > 0):
-            return False
-        return True
+        if (self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s" % emil_address) > 0
+                or self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE username = %s" % username) > 0):
+            return True
+        return False
+
+    def person_exist(self, person_id):
+        if self.cursor.execute("SELECT * FROM " + self.person.name + " WHERE id = %s" % person_id) > 0:
+            return True
+        return False
 
     def update_token(self, token, email_address):
-        self.cursor.exexuteU("UPDATE " + self.ACCOUNT_TABLE + " SET token = %s WHERE email = %s",
-                             (token, email_address))
+        self.cursor.execute("UPDATE " + self.account.name + " SET token = %s WHERE email = %s", (token, email_address))
 
 
 def main():
-    db = FamilyTreeDB()
-    db.create_tables()
-    #db.add_user("Liat", 2345)
+    # db = FamilyTreeDB()
+    # db.create_tables()
+    # db.add_user("Liat", 2345)
     # db.cursor.execute("SELECT * FROM users")
     # for x in db.cursor:
     #     print(x)
+    pass
 
 
 if __name__ == "__main__":

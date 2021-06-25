@@ -2,11 +2,13 @@ from DB import FamilyTreeDB
 from uuid import uuid4
 import json
 
+db = FamilyTreeDB()
+
 
 def valid_login(email_address, password):
     # check in users table (select)
     data = {}
-    account = FamilyTreeDB.select_specific_account(email_address, password)
+    account = db.select_specific_account(email_address, password)
     if len(account) == 1:
         status = 200
         message = "Login was successfully!"
@@ -17,7 +19,7 @@ def valid_login(email_address, password):
     # create token (random/ hash table/ md 5)
     rand_token = uuid4()
     # save token in DB
-    FamilyTreeDB.update_token(rand_token, email_address)
+    db.update_token(rand_token, email_address)
     result = {
         "status": status,
         "message": message,
@@ -29,11 +31,11 @@ def valid_login(email_address, password):
 
 def valid_signup(body):
     table_name = "account"
-    if FamilyTreeDB.account_exist(body["email"], body["username"]):
+    if db.account_exist(body["email"], body["username"]):
         status = 404
-        message = "Signup Failed. Email or username exist in the system"
+        message = "Signup Failed. user exist in the system"
     else:
-        FamilyTreeDB.add_to_table(table_name, body)
+        db.add_to_table(table_name, body)
         status = 200
         message = "Signup successfully!"
     result = {
@@ -43,8 +45,20 @@ def valid_signup(body):
     return result
 
 
-def add_person(details):
-    pass
+def add_person(body):
+    table_name = "person"
+    if db.person_exist(body["id"]):
+        status = 404
+        message = "Person already exist in the tree"
+    else:
+        db.add_to_table(table_name, body)
+        status = 200
+        message = "Person added to the tree successfully!"
+    result = {
+        "status": status,
+        "message": message,
+    }
+    return result
 
 
 def add_relation(details):
