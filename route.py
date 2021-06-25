@@ -20,8 +20,8 @@ def home():
 @app.route("/login", methods=['POST'])
 def login():
     """Log in page"""
-    email = request.form.get['email']
-    password = request.form.get['password']
+    email = request.form.get('email')
+    password = request.form.get('password')
     if email is None or password is None:
         return {
             "status": 404,
@@ -33,9 +33,9 @@ def login():
 @app.route("/signup", methods=['POST'])
 def signup():
     """Sign in page"""
-    email = request.form.get['email']
-    username = request.form.get['username']
-    password = request.form.get['password']
+    email = request.form.get('email')
+    username = request.form.get('username')
+    password = request.form.get('password')
     if email is None or username is None or password is None:
         return {
             "status": 404,
@@ -52,11 +52,43 @@ def signup():
 @app.route("/add_new_person", methods=['POST'])
 def add_new_person():
     """add new person page"""
-    person_id = request.form['person_id']
-    mother_id = request.form['mother_id']
-    father_id = request.form['father_id']
-    details = [person_id, mother_id, father_id]
+    person_id = request.form.get('person_id')
+    first_name = request.form.get('first_name')
+    last_name = request.form('last_name')
+    gender = request.form.get('gender')
+    if person_id is None or first_name is None or last_name is None or gender is None:
+        return {
+            "status": 404,
+            "message": "some values are missing"
+        }
+
+    details = {
+        "id": person_id,
+        "first_name": first_name,
+        "last_name": last_name,
+        "gender": gender
+    }
     return add_person(details)
+
+
+@app.route("/add_new_relation", methods=['POST'])
+def add_new_relation():
+    """add new person page. mother_id and father_id: at least one of the two in mandatory"""
+    person_id = request.form.get('person_id')
+    mother_id = request.form.get('mother_id')
+    father_id = request.form.get('father_id')
+    if person_id is None and (mother_id is None or father_id is None):
+        return {
+            "status": 404,
+            "message": "some values are missing"
+        }
+
+    details = {
+        "person_id": person_id,
+        "first_name": mother_id,
+        "last_name": father_id
+    }
+    return add_relation(details)
 
 
 @app.route("/get_table", methods=['GET'])

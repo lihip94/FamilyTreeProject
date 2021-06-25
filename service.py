@@ -43,6 +43,14 @@ def valid_signup(body):
     return result
 
 
+def add_person(details):
+    pass
+
+
+def add_relation(details):
+    pass
+
+
 def get_tree_information(token, name):
     # check token and get user_id
     # send user and name to get_tree
@@ -52,12 +60,4 @@ def get_tree_information(token, name):
 
 
 def get_table_information(token, name):
-    pass
-
-
-def add_person(details):
-    pass
-
-
-def is_login(username):
     pass
