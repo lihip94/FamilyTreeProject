@@ -54,11 +54,11 @@ class Relation(Table):
     def __init__(self):
         self.name = TableName.RELATION_TABLE
         self.attr = [
-            "person_id int(11) NOT NULL",
+            "id int(11) NOT NULL",
             "mother_id int(11)",
             "father_id int(11)"
         ]
-        self.primary = "PRIMARY KEY (person_id)"
+        self.primary = "PRIMARY KEY (id)"
 
 
 class Tree(Table):

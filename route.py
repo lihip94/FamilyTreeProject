@@ -14,7 +14,7 @@ def land():
 @app.route("/home", methods=['GET'])
 def home():
     """Home page"""
-    return is_login(request.form['username'])
+    pass
 
 
 @app.route("/login", methods=['POST'])
@@ -56,12 +56,6 @@ def add_new_person():
     first_name = request.form.get('first_name')
     last_name = request.form('last_name')
     gender = request.form.get('gender')
-    if person_id is None or first_name is None or last_name is None or gender is None:
-        return {
-            "status": 404,
-            "message": "some values are missing"
-        }
-
     details = {
         "id": person_id,
         "first_name": first_name,
@@ -77,16 +71,10 @@ def add_new_relation():
     person_id = request.form.get('person_id')
     mother_id = request.form.get('mother_id')
     father_id = request.form.get('father_id')
-    if person_id is None and (mother_id is None or father_id is None):
-        return {
-            "status": 404,
-            "message": "some values are missing"
-        }
-
     details = {
         "person_id": person_id,
-        "first_name": mother_id,
-        "last_name": father_id
+        "mother_id": mother_id,
+        "father_id": father_id
     }
     return add_relation(details)
 

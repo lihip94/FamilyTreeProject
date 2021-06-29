@@ -32,7 +32,7 @@ def valid_login(email_address, password):
 def valid_signup(body):
     table_name = "account"
     if db.account_exist(body["email"], body["username"]):
-        status = 404
+        status = 400
         message = "Signup Failed. user exist in the system"
     else:
         db.add_to_table(table_name, body)
@@ -47,9 +47,12 @@ def valid_signup(body):
 
 def add_person(body):
     table_name = "person"
-    if db.person_exist(body["id"]):
-        status = 404
-        message = "Person already exist in the tree"
+    if body["person_id"] is None or body["first_name"] is None or body["last_name"] is None or body["gender"] is None:
+        status = 404,
+        message = "some values are missing"
+    elif db.person_exist(table_name, body["id"]):
+        status = 400
+        message = "Person already exist in the tree."
     else:
         db.add_to_table(table_name, body)
         status = 200
@@ -61,8 +64,23 @@ def add_person(body):
     return result
 
 
-def add_relation(details):
-    pass
+def add_relation(body):
+    table_name = "relation"
+    if body["person_id"] is None or (body["mother_id"] is None or body["father_id"] is None):
+        status = 400
+        message = "some values are missing"
+    elif db.person_exist(table_name, body["person_id"]):
+        status = 404
+        message = "Person relation exist."
+    else:
+        db.add_to_table(table_name, body)
+        status = 200
+        message = "Person added to the tree successfully!"
+    result = {
+        "status": status,
+        "message": message,
+    }
+    return result
 
 
 def get_tree_information(token, name):
