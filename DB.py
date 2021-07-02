@@ -98,8 +98,29 @@ class FamilyTreeDB:
             return True
         return False
 
+    def connection_exist(self, tree_id, email):
+        if self.cursor.execute("SELECT * FROM connection WHERE tree_id = %s AND email = %s" % (tree_id, email)) > 0:
+            return True
+        return False
+
     def update_token(self, token, email_address):
         self.cursor.execute("UPDATE " + self.account.name + " SET token = %s WHERE email = %s", (token, email_address))
+
+    def token_exist(self, token):
+        if self.cursor.execute("SELECT * FROM account WHERE token = %s" % token) == 1:
+            return True
+        return False
+
+    def get_emil(self, token):
+        user_row = self.cursor.execute("SELECT * FROM account WHERE token = %s" % token)
+        return user_row[2]
+
+    def get_tree_id(self, tree_name):
+        tree_row = self.cursor.execute("SELECT * FROM tree WHERE name = %s" % tree_name)
+        return tree_row[0]
+
+    def get_tree_persons(self, tree_id):
+        return self.cursor.execute("SELECT person_id FROM root WHERE name = %s" % tree_id)
 
 
 def main():

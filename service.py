@@ -83,10 +83,26 @@ def add_relation(body):
     return result
 
 
-def get_tree_information(token, name):
-    # check token and get user_id
-    # send user and name to get_tree
-    result_from_db = db.get_table_content(name)
-    # convert the result that will route
-    return result_from_db
+def get_tree_information(token, tree_name):
+    if not db.token_exist(token):
+        message = "invalid user"
+        status = 404
+    email = db.get_emil(token)
+    tree_id = db.get_tree_id(tree_name)
+    if len(tree_id) <= 0:
+        message = "tree name is not valid"
+        status = 404
+    elif not db.connection_exist(tree_id, email):
+        message = "user doesn't have permit to see tree detail"
+        status = 400
+    else:
+        tree_data = db.get_tree_persons(tree_id)
+        message = "Success"
+        status = 200
+    result = {
+        "status": status,
+        "message": message,
+        "data": tree_data
+    }
+    return result
 

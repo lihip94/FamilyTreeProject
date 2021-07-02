@@ -86,8 +86,8 @@ def get_table():
 def get_tree():
     """get tree information"""
     token = request.form['token']
-    name = request.form['tree_name']
-    return get_tree_information(token, name)
+    tree_name = request.form['tree_name']
+    return get_tree_information(token, tree_name)
 
 
 if __name__ == "__main__":

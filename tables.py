@@ -11,7 +11,6 @@ class Table:
     def only_attr(self):
         return ', '.join(attr.spliy()[0] for attr in self.attr_with_types())
 
-
     def num_of_attr(self):
         num = len(self.attr)
         return '%s' * num
