@@ -22,11 +22,6 @@ def login():
     """Log in page"""
     email = request.form.get('email')
     password = request.form.get('password')
-    if email is None or password is None:
-        return {
-            "status": 404,
-            "message": "some values are missing"
-        }
     return valid_login(email, password)
 
 
@@ -84,7 +79,7 @@ def get_table():
     """get table information"""
     token = request.form['token']
     name = request.form['tree_name']
-    return get_table_information(token, name)
+    return get_tree_information(token, name)
 
 
 @app.route("/get_tree", methods=['GET'])

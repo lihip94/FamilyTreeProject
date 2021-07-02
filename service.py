@@ -86,10 +86,7 @@ def add_relation(body):
 def get_tree_information(token, name):
     # check token and get user_id
     # send user and name to get_tree
-    result_from_db = FamilyTreeDB.get_table_content(name)
+    result_from_db = db.get_table_content(name)
     # convert the result that will route
     return result_from_db
 
-
-def get_table_information(token, name):
-    pass
