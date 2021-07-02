@@ -1,8 +1,6 @@
 import mysql.connector
 from tables import *
 
-FAMILY_TREE_DB = "familytreedb"
-
 
 class FamilyTreeDB:
     def __init__(self):
@@ -11,7 +9,7 @@ class FamilyTreeDB:
             host="localhost",
             user="root",
             password="RRROOOTTT12345",
-            database="familytreedb"
+            database="familytree"
         )
         self.cursor = self.db.cursor()
         self.account = Account()
@@ -125,17 +123,6 @@ class FamilyTreeDB:
         for person_id in persons_id:
             persons_in_tree.add(self.cursor.execute("SELECT person_id FROM person WHERE id = %s" % person_id))
         return persons_in_tree
-
-
-
-def main():
-    # db = FamilyTreeDB()
-    # db.create_tables()
-    # db.add_user("Liat", 2345)
-    # db.cursor.execute("SELECT * FROM users")
-    # for x in db.cursor:
-    #     print(x)
-    pass
 
 
 if __name__ == "__main__":
