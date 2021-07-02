@@ -86,6 +86,6 @@ class Connection(Table):
         self.name = TableName.CONNECTION_TABLE
         self.attr = [
             "tree_id int(5) PRIMARY KEY",
-            "user_id int(11) NOT NULL"
+            "email int(11) NOT NULL"
         ]
         self.primary = "PRIMARY KEY (tree_id)"
