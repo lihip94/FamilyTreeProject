@@ -123,7 +123,3 @@ class FamilyTreeDB:
         for person_id in persons_id:
             persons_in_tree.add(self.cursor.execute("SELECT person_id FROM person WHERE id = %s" % person_id))
         return persons_in_tree
-
-
-if __name__ == "__main__":
-    main()
