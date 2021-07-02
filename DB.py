@@ -120,7 +120,12 @@ class FamilyTreeDB:
         return tree_row[0]
 
     def get_tree_persons(self, tree_id):
-        return self.cursor.execute("SELECT person_id FROM root WHERE name = %s" % tree_id)
+        persons_id = self.cursor.execute("SELECT person_id FROM root WHERE name = %s" % tree_id)
+        persons_in_tree = {}
+        for person_id in persons_id:
+            persons_in_tree.add(self.cursor.execute("SELECT person_id FROM person WHERE id = %s" % person_id))
+        return persons_in_tree
+
 
 
 def main():

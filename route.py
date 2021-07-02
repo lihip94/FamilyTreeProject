@@ -51,11 +51,13 @@ def add_new_person():
     first_name = request.form.get('first_name')
     last_name = request.form('last_name')
     gender = request.form.get('gender')
+    tree_id = request.form.get('tree_id')
     details = {
         "id": person_id,
         "first_name": first_name,
         "last_name": last_name,
-        "gender": gender
+        "gender": gender,
+        "tree_id": tree_id
     }
     return add_person(details)
 

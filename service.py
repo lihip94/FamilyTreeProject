@@ -46,15 +46,18 @@ def valid_signup(body):
 
 
 def add_person(body):
-    table_name = "person"
-    if body["person_id"] is None or body["first_name"] is None or body["last_name"] is None or body["gender"] is None:
+    person_table = "person"
+    if body["id"] is None or body["first_name"] is None or body["last_name"] is None or body["gender"] is None:
         status = 404,
         message = "some values are missing"
-    elif db.person_exist(table_name, body["id"]):
+    elif db.person_exist(person_table, body["id"]):
         status = 400
         message = "Person already exist in the tree."
     else:
-        db.add_to_table(table_name, body)
+        person_body = {body["id"], body["first_name"], body["last_name"], body["gender"]}
+        root_body = {body["tree_id"], body["id"]}
+        db.add_to_table(person_table, person_body)
+        db.add_to_table("root", root_body)
         status = 200
         message = "Person added to the tree successfully!"
     result = {
