@@ -31,11 +31,16 @@ def valid_login(email_address, password):
 
 def valid_signup(body):
     table_name = "account"
-    if db.account_exist(body["email"], body["username"]):
+    if db.account_exist(body["email"]):
         status = 400
         message = "Signup Failed. user exist in the system"
     else:
-        db.add_to_table(table_name, body)
+        rand_token = uuid4().int
+        body["rand_token"] = rand_token
+        values_to_add = ()
+        for value in body.values():
+            values_to_add += (value,)
+        db.add_to_table(table_name, values_to_add)
         status = 200
         message = "Signup successfully!"
     result = {
@@ -109,3 +114,20 @@ def get_tree_information(token, tree_name):
     }
     return result
 
+
+def main():
+    db.create_tables()
+    details = {
+            "username": "user1",
+            "password": 123456,
+            "email": "user1@gmail.com"
+    }
+    print(valid_signup(details))
+    db.cursor.execute("SELECT * FROM account")
+    for x in db.cursor:
+        print(x)
+    pass
+
+
+if __name__ == "__main__":
+    main()

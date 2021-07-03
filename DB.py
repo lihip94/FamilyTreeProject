@@ -11,7 +11,7 @@ class FamilyTreeDB:
             password="RRROOOTTT12345",
             database="familytree"
         )
-        self.cursor = self.db.cursor()
+        self.cursor = self.db.cursor(buffered=True)
         self.account = Account()
         self.person = Person()
         self.relation = Relation()
@@ -54,23 +54,23 @@ class FamilyTreeDB:
         self.db.commit()
 
     def find_table(self, table_name):
-        if table_name == self.users:
-            return self.users
-        elif table_name == self.person:
+        if table_name == self.account.name:
+            return self.account
+        elif table_name == self.person.name:
             return self.person
-        elif table_name == self.relation:
+        elif table_name == self.relation.name:
             return self.relation
-        elif table_name == self.tree:
+        elif table_name == self.tree.name:
             return self.tree
-        elif table_name == self.root:
+        elif table_name == self.root.name:
             return self.root
-        elif table_name == self.connection:
+        elif table_name == self.connection.name:
             return self.connection
 
     def add_to_table(self, table_name, body):
         add_command = "INSERT INTO {} ({}) VALUES ({})"
         table = self.find_table(table_name)
-        self.cursor.execute(add_command.format(table.name, table.only_attr(), body))
+        self.cursor.execute(add_command.format(table.name, table.only_attr(), table.num_of_attr()), body)
         self.db.commit()
 
     def delete_from_table(self, table_name):
@@ -84,15 +84,15 @@ class FamilyTreeDB:
                             % (emil_address, password))
         return self.cursor.fetchall()
 
-    def account_exist(self, emil_address, username):
-        if (self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s" % emil_address) > 0
-                or self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE username = %s" % username) > 0):
+    def account_exist(self, emil_address):
+        if self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s", (emil_address,)):
             return True
         return False
 
     def person_exist(self, table_name, person_id):
         table = self.find_table(table_name)
         if self.cursor.execute("SELECT * FROM " + table.name + " WHERE id = %s" % person_id) > 0:
+            self.cursor.fetchall()
             return True
         return False
 

@@ -37,9 +37,9 @@ def signup():
             "message": "some values are missing"
         }
     details = {
-            "email": email,
             "username": username,
-            "password": password
+            "password": password,
+            "email": email
     }
     return valid_signup(details)
 

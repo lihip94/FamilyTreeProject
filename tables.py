@@ -9,11 +9,11 @@ class Table:
         return ', '.join(self.attr)
 
     def only_attr(self):
-        return ', '.join(attr.spliy()[0] for attr in self.attr_with_types())
+        return ', '.join(attr.split()[0] for attr in self.attr)
 
     def num_of_attr(self):
         num = len(self.attr)
-        return '%s' * num
+        return '%s, ' * (num-1) + '%s'
 
 
 class TableName:
@@ -32,7 +32,7 @@ class Account(Table):
             "username VARCHAR(50) NOT NULL",
             "password VARCHAR(255) NOT NULL",
             "email VARCHAR(25) NOT NULL",
-            "token VARCHAR(17) NOT NULL",
+            "token VARCHAR(64) NOT NULL",
         ]
         self.primary = "PRIMARY KEY (token)"
 
@@ -84,7 +84,7 @@ class Connection(Table):
     def __init__(self):
         self.name = TableName.CONNECTION_TABLE
         self.attr = [
-            "tree_id int(5) PRIMARY KEY",
+            "tree_id int(5) NOT NULL",
             "email int(11) NOT NULL"
         ]
         self.primary = "PRIMARY KEY (tree_id)"
