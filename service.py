@@ -59,8 +59,8 @@ def add_person(body):
         status = 400
         message = "Person already exist in the tree."
     else:
-        person_body = {body["id"], body["first_name"], body["last_name"], body["gender"]}
-        root_body = {body["tree_id"], body["id"]}
+        person_body = (body["id"], body["first_name"], body["last_name"], body["gender"])
+        root_body = (body["tree_id"], body["id"])
         db.add_to_table(person_table, person_body)
         db.add_to_table("root", root_body)
         status = 200
@@ -123,10 +123,17 @@ def main():
             "email": "user1@gmail.com"
     }
     print(valid_signup(details))
+    body = {
+        "id": 203040,
+        "first_name": "Yosi",
+        "last_name": "Yosi",
+        "gender": "M",
+        "tree_id": 1
+    }
+    print(add_person(body))
     db.cursor.execute("SELECT * FROM account")
     for x in db.cursor:
         print(x)
-    pass
 
 
 if __name__ == "__main__":

@@ -92,9 +92,9 @@ class FamilyTreeDB:
         return False
 
     def person_exist(self, table_name, person_id):
-        table = self.find_table(table_name)
-        if self.cursor.execute("SELECT * FROM " + table.name + " WHERE id = %s" % person_id) > 0:
-            self.cursor.fetchall()
+        self.cursor.execute("SELECT * FROM " + table_name + " WHERE id = %s" % person_id)
+        person_row_count = self.cursor.rowcount
+        if person_row_count >= 1:
             return True
         return False
 
