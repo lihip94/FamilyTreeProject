@@ -84,8 +84,10 @@ class FamilyTreeDB:
                             % (emil_address, password))
         return self.cursor.fetchall()
 
-    def account_exist(self, emil_address):
-        if self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s", (emil_address,)):
+    def account_exist(self, email_address):
+        self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s", (email_address,))
+        account_row_count = self.cursor.rowcount
+        if account_row_count >= 1:
             return True
         return False
 
