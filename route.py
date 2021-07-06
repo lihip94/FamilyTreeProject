@@ -6,18 +6,13 @@ app = Flask(__name__)
 
 
 @app.route("/")
+@app.route("/home", methods=['GET', 'POST'])
 def land():
     """Landing page"""
     return "<h1>Landing page<h1>"
 
 
-@app.route("/home", methods=['GET'])
-def home():
-    """Home page"""
-    pass
-
-
-@app.route("/login", methods=['POST'])
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     """Log in page"""
     email = request.form.get('email')
@@ -25,17 +20,18 @@ def login():
     return valid_login(email, password)
 
 
-@app.route("/signup", methods=['POST'])
+@app.route("/signup", methods=['GET', 'POST'])
 def signup():
     """Sign in page"""
+    "<h1>Signup page<h1>"
     email = request.form.get('email')
     username = request.form.get('username')
     password = request.form.get('password')
-    if email is None or username is None or password is None:
-        return {
-            "status": 404,
-            "message": "some values are missing"
-        }
+    # if email is None or username is None or password is None:
+    #     return {
+    #         "status": 404,
+    #         "message": "some values are missing"
+    #     }
     details = {
             "username": username,
             "password": password,
@@ -44,7 +40,7 @@ def signup():
     return valid_signup(details)
 
 
-@app.route("/add_new_tree", methods=['POST'])
+@app.route("/add_new_tree", methods=['GET', 'POST'])
 def add_new_tree():
     """add new person page"""
     tree_name = request.form.get('tree_name')
@@ -52,7 +48,7 @@ def add_new_tree():
     return add_tree(tree_name, token)
 
 
-@app.route("/add_new_person", methods=['POST'])
+@app.route("/add_new_person", methods=['GET', 'POST'])
 def add_new_person():
     """add new person page"""
     person_id = request.form.get('person_id')
@@ -70,7 +66,7 @@ def add_new_person():
     return add_person(details)
 
 
-@app.route("/add_new_relation", methods=['POST'])
+@app.route("/add_new_relation", methods=['GET', 'POST'])
 def add_new_relation():
     """add new person page. mother_id and father_id: at least one of the two in mandatory"""
     person_id = request.form.get('person_id')
@@ -84,7 +80,7 @@ def add_new_relation():
     return add_relation(details)
 
 
-@app.route("/get_table", methods=['GET'])
+@app.route("/get_table", methods=['GET', 'POST'])
 def get_table():
     """get table information"""
     token = request.form['token']
@@ -92,7 +88,7 @@ def get_table():
     return get_tree_information(token, name)
 
 
-@app.route("/get_tree", methods=['GET'])
+@app.route("/get_tree", methods=['GET', 'POST'])
 def get_tree():
     """get tree information"""
     token = request.form['token']
