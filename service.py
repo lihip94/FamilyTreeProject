@@ -8,23 +8,22 @@ db = FamilyTreeDB()
 def valid_login(email_address, password):
     # check in users table (select)
     data = {}
-    account = db.select_specific_account(email_address, password)
-    if len(account) == 1:
+    if email_address is None or password is None:
+        status = 404,
+        message = "some values are missing"
+    elif len(db.select_specific_account(email_address, password)) == 1:
         status = 200
         message = "Login was successfully!"
-        data = account
+        rand_token = uuid4().int
+        db.update_token(rand_token, email_address)
+        data = db.select_specific_account(email_address, password)
     else:
         status = 404
         message = "Login Failed. Something went wrong, Please try again"
-    # create token (random/ hash table/ md 5)
-    rand_token = uuid4()
-    # save token in DB
-    db.update_token(rand_token, email_address)
     result = {
         "status": status,
         "message": message,
-        "data": data,
-        "token": rand_token
+        "data": data
     }
     return json.dumps(result)
 
@@ -141,6 +140,8 @@ def main():
             "email": "user1@gmail.com"
     }
     print(valid_signup(details))
+    print(valid_login("user1@gmail.com", 123456))
+    print(valid_login("user1@gmail.com", 1236))
     body = {
         "id": 203040,
         "first_name": "Yosi",

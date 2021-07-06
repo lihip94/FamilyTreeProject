@@ -80,8 +80,8 @@ class FamilyTreeDB:
         self.cursor.execute("SELECT * " + table_name)
 
     def select_specific_account(self, email_address, password):
-        self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s AND password = %s"
-                            % (email_address, password))
+        self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s AND password = %s",
+                            (email_address, password))
         return self.cursor.fetchall()
 
     def account_exist(self, email_address):
