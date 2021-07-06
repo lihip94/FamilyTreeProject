@@ -21,6 +21,7 @@ class FamilyTreeDB:
 
     def create_tables(self):
         create_command = "CREATE TABLE IF NOT EXISTS {} ({}, {})"
+        create_command_without_primary = "CREATE TABLE IF NOT EXISTS {} ({})"
         # create users table
         self.cursor.execute(
             create_command.format(self.account.name, self.account.attr_with_types(), self.account.primary)
@@ -43,12 +44,12 @@ class FamilyTreeDB:
 
         # create tree-person-relation table
         self.cursor.execute(
-            create_command.format(self.root.name, self.root.attr_with_types(), self.root.primary)
+            create_command_without_primary.format(self.root.name, self.root.attr_with_types())
         )
 
         # create tree-user-relation table
         self.cursor.execute(
-            create_command.format(self.connection.name, self.connection.attr_with_types(), self.connection.primary)
+            create_command_without_primary.format(self.connection.name, self.connection.attr_with_types())
         )
 
         self.db.commit()
