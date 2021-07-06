@@ -50,6 +50,21 @@ def valid_signup(body):
     return result
 
 
+def add_tree(tree_name, token):
+    if not db.token_exist(token):
+        message = "invalid user"
+        status = 404
+    else:
+        db.add_to_table("tree", tree_name)
+        message = "tree add successfully"
+        status = 200
+    result = {
+        "status": status,
+        "message": message,
+    }
+    return result
+
+
 def add_person(body):
     person_table = "person"
     if body["id"] is None or body["first_name"] is None or body["last_name"] is None or body["gender"] is None:

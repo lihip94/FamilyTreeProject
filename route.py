@@ -44,6 +44,14 @@ def signup():
     return valid_signup(details)
 
 
+@app.route("/add_new_tree", methods=['POST'])
+def add_new_tree():
+    """add new person page"""
+    tree_name = request.form.get('tree_name')
+    token = request.form.get['token']
+    return add_tree(tree_name, token)
+
+
 @app.route("/add_new_person", methods=['POST'])
 def add_new_person():
     """add new person page"""

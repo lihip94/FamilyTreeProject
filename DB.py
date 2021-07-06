@@ -107,7 +107,16 @@ class FamilyTreeDB:
         self.cursor.execute("UPDATE " + self.account.name + " SET token = %s WHERE email = %s", (token, email_address))
 
     def token_exist(self, token):
-        if self.cursor.execute("SELECT * FROM account WHERE token = %s" % token) == 1:
+        self.cursor.execute("SELECT * FROM account WHERE token = %s" % token)
+        token_count = self.cursor.rowcount
+        if token_count == 1:
+            return True
+        return False
+
+    def tree_exist(self, tree_id):
+        self.cursor.execute("SELECT * FROM tree WHERE id = %s" % tree_id)
+        tree_count = self.cursor.rowcount
+        if tree_count >= 1:
             return True
         return False
 
