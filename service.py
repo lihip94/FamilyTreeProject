@@ -110,7 +110,7 @@ def get_tree_information(token, tree_name):
     if not db.token_exist(token):
         message = "invalid user"
         status = 404
-    email = db.get_emil(token)
+    email = db.get_email(token)
     tree_id = db.get_tree_id(tree_name)
     if len(tree_id) <= 0:
         message = "tree name is not valid"

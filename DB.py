@@ -79,9 +79,9 @@ class FamilyTreeDB:
     def get_table_content(self, table_name):
         self.cursor.execute("SELECT * " + table_name)
 
-    def select_specific_account(self, emil_address, password):
+    def select_specific_account(self, email_address, password):
         self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s AND password = %s"
-                            % (emil_address, password))
+                            % (email_address, password))
         return self.cursor.fetchall()
 
     def account_exist(self, email_address):
@@ -99,7 +99,9 @@ class FamilyTreeDB:
         return False
 
     def connection_exist(self, tree_id, email):
-        if self.cursor.execute("SELECT * FROM connection WHERE tree_id = %s AND email = %s" % (tree_id, email)) > 0:
+        self.cursor.execute("SELECT * FROM connection WHERE tree_id = %s AND email = %s" % (tree_id, email))
+        connection_row_count = self.cursor.rowcount
+        if connection_row_count > 0:
             return True
         return False
 
@@ -108,19 +110,19 @@ class FamilyTreeDB:
 
     def token_exist(self, token):
         self.cursor.execute("SELECT * FROM account WHERE token = %s" % token)
-        token_count = self.cursor.rowcount
-        if token_count == 1:
+        token_row_count = self.cursor.rowcount
+        if token_row_count == 1:
             return True
         return False
 
     def tree_exist(self, tree_id):
         self.cursor.execute("SELECT * FROM tree WHERE id = %s" % tree_id)
-        tree_count = self.cursor.rowcount
-        if tree_count >= 1:
+        tree_row_count = self.cursor.rowcount
+        if tree_row_count >= 1:
             return True
         return False
 
-    def get_emil(self, token):
+    def get_email(self, token):
         user_row = self.cursor.execute("SELECT * FROM account WHERE token = %s" % token)
         return user_row[2]
 
