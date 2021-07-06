@@ -27,11 +27,6 @@ def signup():
     email = request.form.get('email')
     username = request.form.get('username')
     password = request.form.get('password')
-    # if email is None or username is None or password is None:
-    #     return {
-    #         "status": 404,
-    #         "message": "some values are missing"
-    #     }
     details = {
             "username": username,
             "password": password,

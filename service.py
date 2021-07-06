@@ -31,7 +31,10 @@ def valid_login(email_address, password):
 
 def valid_signup(body):
     table_name = "account"
-    if db.account_exist(body["email"]):
+    if body["email"] is None or body["username"] is None or body["password"] is None:
+        status = 404,
+        message = "some values are missing"
+    elif db.account_exist(body["email"]):
         status = 400
         message = "Signup Failed. user exist in the system"
     else:
