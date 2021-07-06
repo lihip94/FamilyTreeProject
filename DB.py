@@ -131,6 +131,14 @@ class FamilyTreeDB:
         tree_row = self.cursor.execute("SELECT * FROM tree WHERE name = %s", (tree_name,))
         return tree_row[0]
 
+    def tree_not_connect_to_user(self, tree_id, token):
+        self.cursor.execute("SELECT tree_id FROM account,connection where account.token= %s"
+                            " AND account.email=connection.email AND connection.tree_id= %s", (token, tree_id))
+        tree_row_count = self.cursor.rowcount
+        if tree_row_count < 1:
+            return True
+        return False
+
     def get_tree_persons(self, tree_id):
         persons_id = self.cursor.execute("SELECT person_id FROM root WHERE name = %s",(tree_id,))
         persons_in_tree = {}

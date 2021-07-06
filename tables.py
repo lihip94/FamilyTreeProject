@@ -84,5 +84,5 @@ class Connection(Table):
         self.name = TableName.CONNECTION_TABLE
         self.attr = [
             "tree_id int(5) NOT NULL",
-            "email int(11) NOT NULL"
+            "email VARCHAR(25) NOT NULL"
         ]
