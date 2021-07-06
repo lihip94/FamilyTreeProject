@@ -77,7 +77,6 @@ class Root(Table):
             "tree_id int(5) NOT NULL",
             "person_id int(11) NOT NULL"
         ]
-        self.primary = "PRIMARY KEY (tree_id)"
 
 
 class Connection(Table):
@@ -87,4 +86,3 @@ class Connection(Table):
             "tree_id int(5) NOT NULL",
             "email int(11) NOT NULL"
         ]
-        self.primary = "PRIMARY KEY (tree_id)"

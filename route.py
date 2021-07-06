@@ -48,7 +48,7 @@ def add_new_person():
     """add new person page"""
     person_id = request.form.get('person_id')
     first_name = request.form.get('first_name')
-    last_name = request.form('last_name')
+    last_name = request.form.get('last_name')
     gender = request.form.get('gender')
     tree_id = request.form.get('tree_id')
     details = {

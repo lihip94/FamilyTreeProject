@@ -134,25 +134,25 @@ def get_tree_information(token, tree_name):
 
 def main():
     db.create_tables()
-    details = {
-            "username": "user1",
-            "password": 123456,
-            "email": "user1@gmail.com"
-    }
-    print(valid_signup(details))
-    print(valid_login("user1@gmail.com", 123456))
-    print(valid_login("user1@gmail.com", 1236))
-    body = {
-        "id": 203040,
-        "first_name": "Yosi",
-        "last_name": "Yosi",
-        "gender": "M",
-        "tree_id": 1
-    }
-    print(add_person(body))
-    db.cursor.execute("SELECT * FROM account")
-    for x in db.cursor:
-        print(x)
+    # details = {
+    #         "username": "user1",
+    #         "password": 123456,
+    #         "email": "user1@gmail.com"
+    # }
+    # print(valid_signup(details))
+    # print(valid_login("user1@gmail.com", 123456))
+    # print(valid_login("user1@gmail.com", 1236))
+    # body = {
+    #     "id": 203043,
+    #     "first_name": "Chen",
+    #     "last_name": "Yosi",
+    #     "gender": "F",
+    #     "tree_id": 1
+    # }
+    # print(add_person(body))
+    # db.cursor.execute("SELECT * FROM account")
+    # for x in db.cursor:
+    #     print(x)
 
 
 if __name__ == "__main__":

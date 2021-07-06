@@ -92,14 +92,14 @@ class FamilyTreeDB:
         return False
 
     def person_exist(self, table_name, person_id):
-        self.cursor.execute("SELECT * FROM " + table_name + " WHERE id = %s" % person_id)
+        self.cursor.execute("SELECT * FROM " + table_name + " WHERE id = %s", (person_id,))
         person_row_count = self.cursor.rowcount
         if person_row_count >= 1:
             return True
         return False
 
     def connection_exist(self, tree_id, email):
-        self.cursor.execute("SELECT * FROM connection WHERE tree_id = %s AND email = %s" % (tree_id, email))
+        self.cursor.execute("SELECT * FROM connection WHERE tree_id = %s AND email = %s", (tree_id, email))
         connection_row_count = self.cursor.rowcount
         if connection_row_count > 0:
             return True
@@ -109,30 +109,30 @@ class FamilyTreeDB:
         self.cursor.execute("UPDATE " + self.account.name + " SET token = %s WHERE email = %s", (token, email_address))
 
     def token_exist(self, token):
-        self.cursor.execute("SELECT * FROM account WHERE token = %s" % token)
+        self.cursor.execute("SELECT * FROM account WHERE token = %s", (token,))
         token_row_count = self.cursor.rowcount
         if token_row_count == 1:
             return True
         return False
 
     def tree_exist(self, tree_id):
-        self.cursor.execute("SELECT * FROM tree WHERE id = %s" % tree_id)
+        self.cursor.execute("SELECT * FROM tree WHERE id = %s", (tree_id,))
         tree_row_count = self.cursor.rowcount
         if tree_row_count >= 1:
             return True
         return False
 
     def get_email(self, token):
-        user_row = self.cursor.execute("SELECT * FROM account WHERE token = %s" % token)
+        user_row = self.cursor.execute("SELECT * FROM account WHERE token = %s", (token,))
         return user_row[2]
 
     def get_tree_id(self, tree_name):
-        tree_row = self.cursor.execute("SELECT * FROM tree WHERE name = %s" % tree_name)
+        tree_row = self.cursor.execute("SELECT * FROM tree WHERE name = %s", (tree_name,))
         return tree_row[0]
 
     def get_tree_persons(self, tree_id):
-        persons_id = self.cursor.execute("SELECT person_id FROM root WHERE name = %s" % tree_id)
+        persons_id = self.cursor.execute("SELECT person_id FROM root WHERE name = %s",(tree_id,))
         persons_in_tree = {}
         for person_id in persons_id:
-            persons_in_tree.add(self.cursor.execute("SELECT person_id FROM person WHERE id = %s" % person_id))
+            persons_in_tree.add(self.cursor.execute("SELECT person_id FROM person WHERE id = %s", (person_id,)))
         return persons_in_tree
