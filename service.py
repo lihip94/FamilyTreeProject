@@ -85,7 +85,7 @@ def add_person(body):
         db.add_to_table(TableName.PERSON_TABLE, person_body)
         db.add_to_table(TableName.ROOT_TABLE, root_body)
         status = 200
-        message = "Person added to the tree successfully!"
+        message = "Person added to the person table successfully!"
     result = {
         "status": status,
         "message": message,
@@ -97,10 +97,14 @@ def add_relation(body):
     if db.person_exist(TableName.RELATION_TABLE, body["person_id"]):
         status = 404
         message = "Person relation exist."
+    elif not db.person_exist(TableName.PERSON_TABLE, body["person_id"]):
+        status = 404
+        message = "First add person than add relation"
     else:
-        db.add_to_table(TableName.RELATION_TABLE, body)
+        values_to_add = tuple([value for value in body.values()])
+        db.add_to_table(TableName.RELATION_TABLE, values_to_add)
         status = 200
-        message = "Person added to the tree successfully!"
+        message = "Person relation added to the tree successfully!"
     result = {
         "status": status,
         "message": message,

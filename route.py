@@ -82,7 +82,7 @@ def add_new_person():
 
 @app.route("/add_new_relation", methods=['GET', 'POST'])
 def add_new_relation():
-    """add new person page. mother_id and father_id: at least one of the two in mandatory"""
+    """add new person page. mother_id and father_id: at least one of the two exist"""
     person_id = request.form.get('person_id')
     mother_id = request.form.get('mother_id')
     father_id = request.form.get('father_id')
