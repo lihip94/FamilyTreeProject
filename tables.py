@@ -32,7 +32,7 @@ class Account(Table):
             "username VARCHAR(50) NOT NULL",
             "password VARCHAR(255) NOT NULL",
             "email VARCHAR(25) NOT NULL",
-            "token VARCHAR(64) NOT NULL",
+            "token VARCHAR(255) NOT NULL",
         ]
         self.primary = "PRIMARY KEY (token)"
 

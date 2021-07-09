@@ -31,7 +31,7 @@ def valid_login(email_address, password):
     if len(data) == 1:
         status = 200
         message = "Login was successfully!"
-        rand_token = uuid4().int
+        rand_token = str(uuid4())
         db.update_token(rand_token, email_address)
     else:
         status = 404
@@ -49,7 +49,7 @@ def valid_signup(body):
         status = 400
         message = "Signup Failed. user exist in the system"
     else:
-        rand_token = uuid4().int
+        rand_token = str(uuid4())
         body["rand_token"] = rand_token
         values_to_add = tuple([value for value in body.values()])
         db.add_to_table(TableName.ACCOUNT_TABLE, values_to_add)
