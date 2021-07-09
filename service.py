@@ -27,12 +27,13 @@ def valid_token(token):
 
 
 def valid_login(email_address, password):
-    data = db.select_specific_account(email_address, password)
-    if len(data) == 1:
+    data = ""
+    if db.account_exist(email_address, password):
         status = 200
         message = "Login was successfully!"
         rand_token = str(uuid4())
         db.update_token(rand_token, email_address)
+        data = db.select_specific_account(email_address, password)
     else:
         status = 404
         message = "Login Failed. Something went wrong, Please try again"
@@ -45,7 +46,7 @@ def valid_login(email_address, password):
 
 
 def valid_signup(body):
-    if db.account_exist(body["email"]):
+    if db.email_exist(body["email"]):
         status = 400
         message = "Signup Failed. user exist in the system"
     else:

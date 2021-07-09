@@ -91,8 +91,16 @@ class FamilyTreeDB:
                             (email_address, password))
         return self.cursor.fetchall()
 
-    def account_exist(self, email_address):
+    def email_exist(self, email_address):
         self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s", (email_address,))
+        account_row_count = self.cursor.rowcount
+        if account_row_count >= 1:
+            return True
+        return False
+
+    def account_exist(self, email_address, password):
+        self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s AND password = %s",
+                            (email_address, password))
         account_row_count = self.cursor.rowcount
         if account_row_count >= 1:
             return True
@@ -114,6 +122,7 @@ class FamilyTreeDB:
 
     def update_token(self, token, email_address):
         self.cursor.execute("UPDATE " + self.account.name + " SET token = %s WHERE email = %s", (token, email_address))
+        self.db.commit()
 
     def token_exist(self, token):
         self.cursor.execute("SELECT * FROM account WHERE token = %s", (token,))
