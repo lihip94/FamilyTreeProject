@@ -1,4 +1,5 @@
 import mysql.connector
+import json
 from tables import *
 
 
@@ -74,6 +75,11 @@ class FamilyTreeDB:
         self.cursor.execute(add_command.format(table.name, table.only_attr(), table.num_of_attr()), body)
         self.db.commit()
 
+    def add_to_tree(self, table_name, body):
+        add_command = "INSERT INTO {} ({}) VALUES ({})"
+        self.cursor.execute(add_command.format(TableName.TREE_TABLE, "name", "%s"), body)
+        self.db.commit()
+
     def delete_from_table(self, table_name):
         pass
 
@@ -116,20 +122,23 @@ class FamilyTreeDB:
             return True
         return False
 
-    def tree_exist(self, tree_id):
-        self.cursor.execute("SELECT * FROM tree WHERE id = %s", (tree_id,))
+    def tree_exist(self, tree_name):
+        self.cursor.execute("SELECT * FROM tree WHERE name = %s", (tree_name,))
         tree_row_count = self.cursor.rowcount
         if tree_row_count >= 1:
             return True
         return False
 
     def get_email(self, token):
-        user_row = self.cursor.execute("SELECT * FROM account WHERE token = %s", (token,))
-        return user_row[2]
+        self.cursor.execute("SELECT email FROM account WHERE token = %s", (token,))
+        return self.cursor.fetchone()
 
     def get_tree_id(self, tree_name):
-        tree_row = self.cursor.execute("SELECT * FROM tree WHERE name = %s", (tree_name,))
-        return tree_row[0]
+        self.cursor.execute("SELECT id FROM tree WHERE name = %s", (tree_name,))
+        tree_id = self.cursor.fetchone()
+        if tree_id:
+            return tree_id[0]
+        return False
 
     def tree_not_connect_to_user(self, tree_id, token):
         self.cursor.execute("SELECT tree_id FROM account,connection where account.token= %s"
@@ -140,8 +149,11 @@ class FamilyTreeDB:
         return False
 
     def get_tree_persons(self, tree_id):
-        persons_id = self.cursor.execute("SELECT person_id FROM root WHERE name = %s", (tree_id,))
-        persons_in_tree = {}
+        self.cursor.execute("SELECT person_id FROM root WHERE tree_id= %s", (tree_id,))
+        persons_id = self.cursor.fetchall()
+        persons_in_tree = []
         for person_id in persons_id:
-            persons_in_tree.add(self.cursor.execute("SELECT * FROM person WHERE id = %s", (person_id,)))
+            self.cursor.execute("SELECT * FROM person WHERE id= %s", (person_id[0],))
+            person_data = self.cursor.fetchone()
+            persons_in_tree.append(person_data)
         return persons_in_tree

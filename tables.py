@@ -64,7 +64,7 @@ class Tree(Table):
     def __init__(self):
         self.name = TableName.TREE_TABLE
         self.attr = [
-            "id int(5) NOT NULL AUTO_INCREMENT",
+            "id int(5) AUTO_INCREMENT",
             "name VARCHAR(50) NOT NULL"
         ]
         self.primary = "PRIMARY KEY (id)"
