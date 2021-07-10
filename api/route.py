@@ -1,6 +1,6 @@
 from flask import request, Blueprint
 
-from service import *
+from data_access.service import *
 
 main = Blueprint('main', __name__)
 
