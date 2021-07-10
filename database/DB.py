@@ -1,6 +1,5 @@
 import mysql.connector
-import json
-from tables import *
+from database.tables import *
 
 
 class FamilyTreeDB:

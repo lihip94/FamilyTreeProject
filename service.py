@@ -1,7 +1,7 @@
-from DB import FamilyTreeDB
+from database.DB import FamilyTreeDB
 from uuid import uuid4
 
-from tables import TableName
+from database.tables import TableName
 
 db = FamilyTreeDB()
 
