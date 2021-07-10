@@ -64,7 +64,7 @@ def valid_signup(body):
 
 
 def add_tree(tree_name, token):
-    ## check if tree name relate to account already
+    # check if tree name relate to account already
     db.add_to_tree(TableName.TREE_TABLE, (tree_name, ))
     result = {
         "status": "tree add successfully",
@@ -137,27 +137,6 @@ def get_tree_information(token, tree_name):
 
 def main():
     db.create_tables()
-    val = None
-    valid_input(val, 123456)
-    # details = {
-    #         "username": "user1",
-    #         "password": 123456,
-    #         "email": "user1@gmail.com"
-    # }
-    # print(valid_signup(details))
-    # print(valid_login("user1@gmail.com", 123456))
-    # print(valid_login("user1@gmail.com", 1236))
-    # body = {
-    #     "id": 203043,
-    #     "first_name": "Chen",
-    #     "last_name": "Yosi",
-    #     "gender": "F",
-    #     "tree_id": 1
-    # }
-    # print(add_person(body))
-    # db.cursor.execute("SELECT * FROM account")
-    # for x in db.cursor:
-    #     print(x)
 
 
 if __name__ == "__main__":
