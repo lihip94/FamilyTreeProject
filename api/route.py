@@ -1,4 +1,4 @@
-from flask import request, Blueprint
+from flask import request, Blueprint,jsonify
 
 from data_access.service import *
 
@@ -20,8 +20,8 @@ def login():
     password = account_data['password']
     validation = valid_input(email, password)
     if validation:
-        return validation
-    return valid_login(email, password)
+        return jsonify(validation)
+    return jsonify(valid_login(email, password))
 
 
 @main.route("/signup", methods=['GET', 'POST'])
@@ -33,13 +33,13 @@ def signup():
     password = account_data['password']
     validation = valid_input(email, username, password)
     if validation:
-        return validation
+        return jsonify(validation)
     details = {
             "username": username,
             "password": password,
             "email": email
     }
-    return valid_signup(details)
+    return jsonify(valid_signup(details))
 
 
 @main.route("/add_new_tree", methods=['GET', 'POST'])
@@ -50,11 +50,11 @@ def add_new_tree():
     token = tree_data['token']
     validation = valid_input(tree_name, token)
     if validation:
-        return validation
+        return jsonify(validation)
     token_validation = valid_token(token)
     if token_validation:
-        return token_validation
-    return add_tree(tree_name, token)
+        return jsonify(token_validation)
+    return jsonify(add_tree(tree_name, token))
 
 
 @main.route("/add_new_person", methods=['GET', 'POST'])
@@ -69,10 +69,10 @@ def add_new_person():
     token = person_data['token']
     validation = valid_input(person_id, first_name, last_name, gender, tree_id, token)
     if validation:
-        return validation
+        return jsonify(validation)
     token_validation = valid_token(token)
     if token_validation:
-        return token_validation
+        return jsonify(token_validation)
     details = {
         "id": person_id,
         "first_name": first_name,
@@ -81,7 +81,7 @@ def add_new_person():
         "tree_id": tree_id,
         "token": token
     }
-    return add_person(details)
+    return jsonify(add_person(details))
 
 
 @main.route("/add_new_relation", methods=['GET', 'POST'])
@@ -94,16 +94,16 @@ def add_new_relation():
     token = relation_data['token']
     validation = valid_input(person_id, mother_id, father_id, token)
     if validation:
-        return validation
+        return jsonify(validation)
     token_validation = valid_token(token)
     if token_validation:
-        return token_validation
+        return jsonify(token_validation)
     details = {
         "person_id": person_id,
         "mother_id": mother_id,
         "father_id": father_id
     }
-    return add_relation(details)
+    return jsonify(add_relation(details))
 
 
 @main.route("/get_tree_table", methods=['GET', 'POST'])
@@ -114,8 +114,8 @@ def get_table():
     name = tree_data['tree_name']
     validation = valid_input(token, name)
     if validation:
-        return validation
+        return jsonify(validation)
     token_validation = valid_token(token)
     if token_validation:
-        return token_validation
-    return get_tree_information(token, name)
+        return jsonify(token_validation)
+    return jsonify(get_tree_information(token, name))
