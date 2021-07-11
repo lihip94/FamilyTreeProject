@@ -1,5 +1,6 @@
 import mysql.connector
 from database.tables import *
+import json
 
 
 class FamilyTreeDB:
@@ -85,10 +86,19 @@ class FamilyTreeDB:
     def get_table_content(self, table_name):
         self.cursor.execute("SELECT * " + table_name)
 
+    def get_col_names(self, table_name):
+        print(self.cursor.description)
+        self.cursor.execute("SELECT * " + table_name)
+
     def select_specific_account(self, email_address, password):
         self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s AND password = %s",
                             (email_address, password))
-        return (self.cursor.fetchall())[0]
+        col_values = (self.cursor.fetchall())[0]
+        col_names = [column[0] for column in self.cursor.description]
+        account_data = {}
+        for i in range(len(col_names)):
+            account_data[str(col_names[i])] = col_values[i]
+        return account_data
 
     def email_exist(self, email_address):
         self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s", (email_address,))
