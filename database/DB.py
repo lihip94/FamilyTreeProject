@@ -1,6 +1,5 @@
 import mysql.connector
 from database.tables import *
-import json
 
 
 class FamilyTreeDB:
@@ -84,10 +83,6 @@ class FamilyTreeDB:
         pass
 
     def get_table_content(self, table_name):
-        self.cursor.execute("SELECT * " + table_name)
-
-    def get_col_names(self, table_name):
-        print(self.cursor.description)
         self.cursor.execute("SELECT * " + table_name)
 
     def select_specific_account(self, email_address, password):
