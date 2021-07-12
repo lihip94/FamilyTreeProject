@@ -1,18 +1,10 @@
-from flask import request, Blueprint,jsonify
-
+from flask import request, Blueprint, jsonify
 from data_access.service import *
 
 main = Blueprint('main', __name__)
 
 
-@main.route("/")
-@main.route("/home", methods=['GET', 'POST'])
-def land():
-    """Landing page"""
-    return '<h1>"hello world"</h1>'
-
-
-@main.route("/login", methods=['GET', 'POST'])
+@main.route("/login", methods=["POST"])
 def login():
     """Log in page"""
     account_data = request.get_json()
@@ -24,7 +16,7 @@ def login():
     return jsonify(valid_login(email, password))
 
 
-@main.route("/signup", methods=['GET', 'POST'])
+@main.route("/signup", methods=["POST"])
 def signup():
     """Sign up page"""
     account_data = request.get_json()
@@ -42,7 +34,7 @@ def signup():
     return jsonify(valid_signup(details))
 
 
-@main.route("/add_new_tree", methods=['GET', 'POST'])
+@main.route("/add_new_tree", methods=["POST"])
 def add_new_tree():
     """add new person page"""
     tree_data = request.get_json()
@@ -57,7 +49,7 @@ def add_new_tree():
     return jsonify(add_tree(tree_name, token))
 
 
-@main.route("/add_new_person", methods=['GET', 'POST'])
+@main.route("/add_new_person", methods=["POST"])
 def add_new_person():
     """add new person page"""
     person_data = request.get_json()
@@ -84,7 +76,7 @@ def add_new_person():
     return jsonify(add_person(details))
 
 
-@main.route("/add_new_relation", methods=['GET', 'POST'])
+@main.route("/add_new_relation", methods=["POST"])
 def add_new_relation():
     """add new person page. mother_id and father_id: at least one of the two exist"""
     relation_data = request.get_json()
