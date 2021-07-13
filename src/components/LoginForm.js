@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input, Button } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
-import { backendService } from "../utils/paths";
+import { getLogin } from "../requests/GetLogin";
 
 export const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -31,25 +31,12 @@ export const LoginForm = () => {
       <Form.Field>
         <Button
           onClick={async () => {
-            const account = { email, password };
-            const response = await fetch(backendService.getLoginPath, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(account),
-            });
-
-            if (response.ok) {
-              console.log("response worked!");
-              const data = await response.json();
-              const status = data.status;
-
+            const status = await getLogin(email, password);
+            if (status === 200) {
+              history.push("/showTable");
+            } else {
               setEmail("");
               setPassword("");
-              if (status === 200) {
-                history.push("/showTable");
-              }
             }
           }}
         >
