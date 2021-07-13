@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Form, Input, Button } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
+import { backendService } from "../utils/paths";
 
-export const LoginForm = ({ onNewMovie }) => {
+export const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   let history = useHistory();
@@ -31,7 +32,7 @@ export const LoginForm = ({ onNewMovie }) => {
         <Button
           onClick={async () => {
             const account = { email, password };
-            const response = await fetch("http://localhost:5000/login", {
+            const response = await fetch(backendService.getLoginPath, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -41,10 +42,14 @@ export const LoginForm = ({ onNewMovie }) => {
 
             if (response.ok) {
               console.log("response worked!");
-              console.log(response.json().then((data) => console.log(data)));
+              const data = await response.json();
+              const status = data.status;
+
               setEmail("");
               setPassword("");
-              history.push("/showTable");
+              if (status === 200) {
+                history.push("/showTable");
+              }
             }
           }}
         >
