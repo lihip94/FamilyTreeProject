@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Form, Input, Button } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
-import { getLogin } from "../requests/GetLogin";
+import { getLogin } from "../requests/PostLogin";
 
+export let token = "";
 export const LoginForm = () => {
+  localStorage.setItem("authorized", false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   let history = useHistory();
@@ -31,9 +33,16 @@ export const LoginForm = () => {
       <Form.Field>
         <Button
           onClick={async () => {
-            const status = await getLogin(email, password);
-            if (status === 200) {
-              history.push("/showTable");
+            const userResponse = await getLogin(email, password);
+            console.log(userResponse.status);
+            if (userResponse.status === 200) {
+              if (userResponse.data) {
+                token = userResponse.data.token;
+                localStorage.setItem("authorized", true);
+                history.push({
+                  pathname: "/showTable",
+                });
+              }
             } else {
               setEmail("");
               setPassword("");

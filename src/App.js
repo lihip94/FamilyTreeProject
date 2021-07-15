@@ -9,11 +9,7 @@ function App() {
     <div className="App">
       <Router>
         <Route exact path="/login" component={LoginForm} />
-        <Route
-          exact
-          path="/showTable"
-          component={() => <ShowTable authorized={true} />}
-        />
+        <Route exact path="/showTable" component={ShowTable} />
       </Router>
     </div>
   );
