@@ -39,8 +39,9 @@ export const LoginForm = () => {
               if (userResponse.data) {
                 token = userResponse.data.token;
                 localStorage.setItem("authorized", true);
+                localStorage.setItem("token", token);
                 history.push({
-                  pathname: "/showTable",
+                  pathname: "/",
                 });
               }
             } else {
