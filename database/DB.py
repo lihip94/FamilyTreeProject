@@ -75,17 +75,6 @@ class FamilyTreeDB:
         self.cursor.execute(add_command.format(table.name, table.only_attr(), table.num_of_attr()), body)
         self.db.commit()
 
-    def add_to_tree(self, table_name, body):
-        add_command = "INSERT INTO {} ({}) VALUES ({})"
-        self.cursor.execute(add_command.format(TableName.TREE_TABLE, "name", "%s"), body)
-        self.db.commit()
-
-    def delete_from_table(self, table_name):
-        pass
-
-    def get_table_content(self, table_name):
-        self.cursor.execute("SELECT * " + table_name)
-
     def select_specific_account(self, email_address, password):
         self.cursor.execute("SELECT * FROM " + self.account.name + " WHERE email = %s AND password = %s",
                             (email_address, password))

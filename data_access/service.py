@@ -65,7 +65,7 @@ def valid_signup(body):
 
 def add_tree(tree_name, token):
     # check if tree name relate to account already
-    db.add_to_tree(TableName.TREE_TABLE, (tree_name, ))
+    db.add_to_table(TableName.TREE_TABLE, ("0", tree_name))
     result = {
         "status": "tree add successfully",
         "message": 200,
