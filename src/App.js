@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { backendService } from "./utils/paths";
 import { LoginForm } from "./components/LoginForm";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import ShowTable from "./components/ShowTableForm";
+import { Persons } from "./Persons";
 import "./App.css";
 
 function App() {
+  const [persons, setPersons] = useState([]);
   const token = localStorage.getItem("token");
   const tree_name = "Cohen";
   const userTreeInfo = { token, tree_name };
@@ -18,7 +19,7 @@ function App() {
       body: JSON.stringify(userTreeInfo),
     }).then((response) =>
       response.json().then((data) => {
-        console.log(data);
+        setPersons(data.data);
       })
     );
   }, []);
@@ -26,8 +27,8 @@ function App() {
     <div className="App">
       <Router>
         <Route exact path="/login" component={LoginForm} />
-        <Route exact path="/showTable" component={ShowTable} />
       </Router>
+      <Persons persons={persons} />
     </div>
   );
 }
