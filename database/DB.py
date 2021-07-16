@@ -1,15 +1,16 @@
 import mysql.connector
 from database.tables import *
+import database.mydatabaseconfig as cfg
 
 
 class FamilyTreeDB:
     def __init__(self):
         # singleton function or connection pool
         self.db = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="RRROOOTTT12345",
-            database="familytree"
+            host=cfg.mysql["host"],
+            user=cfg.mysql["user"],
+            password=cfg.mysql["password"],
+            database=cfg.mysql["db"]
         )
         self.cursor = self.db.cursor(buffered=True)
         self.account = Account()
