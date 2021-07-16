@@ -172,9 +172,13 @@ class FamilyTreeDB:
         select_command = "SELECT {} FROM {} WHERE {} = %s"
         self.cursor.execute(select_command.format("person_id", self.root.name, "tree_id"), (tree_id,))
         persons_id = self.cursor.fetchall()
+        person_dict = {}
         persons_in_tree = []
+        keys = ["id", "first_name", "last_name", "gender"]
         for person_id in persons_id:
             self.cursor.execute(select_command.format("*", self.person.name, "id"), (person_id[0],))
             person_data = self.cursor.fetchone()
-            persons_in_tree.append(person_data)
+            for i in range(len(person_data)):
+                person_dict[keys[i]] = person_data[i]
+            persons_in_tree.append(person_dict)
         return persons_in_tree
