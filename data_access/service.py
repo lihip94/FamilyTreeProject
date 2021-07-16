@@ -64,11 +64,19 @@ def valid_signup(body):
 
 
 def add_tree(tree_name, token):
-    # check if tree name relate to account already
-    db.add_to_table(TableName.TREE_TABLE, ("0", tree_name))
+    tree_id = db.get_tree_id(tree_name)
+    email = db.get_email(token)
+    if db.connection_exist(tree_id, email):
+        status = 404
+        message = "user already have tree with this name"
+    else:
+        db.add_to_table(TableName.TREE_TABLE, ("0", tree_name))
+        db.add_to_table(TableName.CONNECTION_TABLE, (tree_id, email))
+        status = 200
+        message = "tree add successfully"
     result = {
-        "status": "tree add successfully",
-        "message": 200,
+        "status": status,
+        "message": message,
     }
     return result
 
@@ -114,10 +122,13 @@ def add_relation(body):
 
 
 def get_tree_information(token, tree_name):
-    email = db.get_email(token)[0]
+    email = db.get_email(token)
     tree_id = db.get_tree_id(tree_name)
     tree_data = {}
-    if not tree_id:
+    if not email:
+        message = "invalid user"
+        status = 404
+    elif not tree_id:
         message = "tree name is not valid"
         status = 404
     elif not db.connection_exist(tree_id, email):
