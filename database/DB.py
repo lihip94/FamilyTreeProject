@@ -218,6 +218,7 @@ class FamilyTreeDB:
                 for i in range(len(person_data)):
                     person_dict[keys[i]] = person_data[i]
                 persons_in_tree.append(person_dict)
+                person_dict = {}
             return persons_in_tree
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))
