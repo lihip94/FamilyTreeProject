@@ -7,8 +7,10 @@ export const TableNameForm = () => {
   localStorage.setItem("tree_name", "");
   let history = useHistory();
   function handleClick() {
-    localStorage.setItem("tree_name", treeName);
-    history.push("/showTable");
+    if (treeName) {
+      localStorage.setItem("tree_name", treeName);
+      history.push("/showTable");
+    }
   }
 
   return (
@@ -24,7 +26,7 @@ export const TableNameForm = () => {
         />
       </Form.Field>
       <Form.Field>
-        <Button onClick={handleClick}>login</Button>
+        <Button onClick={handleClick}>get family information</Button>
       </Form.Field>
     </Form>
   );

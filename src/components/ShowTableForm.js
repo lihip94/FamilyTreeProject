@@ -17,7 +17,6 @@ export const ShowTableForm = () => {
       token = localStorage.getItem("token");
       tree_name = localStorage.getItem("tree_name");
     }
-    //const tree_name = "Cohen";
     const userTreeInfo = { token, tree_name };
     fetch(backendService.getTreeInformation, {
       method: "POST",

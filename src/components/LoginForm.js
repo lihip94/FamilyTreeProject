@@ -33,22 +33,28 @@ export const LoginForm = () => {
       <Form.Field>
         <Button
           onClick={async () => {
-            const userResponse = await getLogin(email, password);
-            console.log(userResponse.status);
-            if (userResponse.status === 200) {
-              if (userResponse.data) {
-                console.log(userResponse);
-                token = userResponse.data.token;
-                localStorage.setItem("authorized", true);
-                localStorage.setItem("token", token);
-                history.push({
-                  pathname: "/table-name",
-                });
-              }
-            } else {
+            if (!email || !password) {
               setEmail("");
               setPassword("");
               localStorage.setItem("authorized", false);
+            } else {
+              const userResponse = await getLogin(email, password);
+              console.log(userResponse.status);
+              if (userResponse.status === 200) {
+                if (userResponse.data) {
+                  console.log(userResponse);
+                  token = userResponse.data.token;
+                  localStorage.setItem("authorized", true);
+                  localStorage.setItem("token", token);
+                  history.push({
+                    pathname: "/table-name",
+                  });
+                }
+              } else {
+                setEmail("");
+                setPassword("");
+                localStorage.setItem("authorized", false);
+              }
             }
           }}
         >
