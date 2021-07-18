@@ -6,11 +6,31 @@ export const Persons = ({ persons }) => {
   console.log(persons);
   return (
     <div>
+      <div className="person-container">
+        <table>
+          <tr>
+            <td>
+              <b>first name</b>
+            </td>
+            <td>
+              <b>last name</b>
+            </td>
+            <td>
+              <b>gender</b>
+            </td>
+          </tr>
+        </table>
+      </div>
       {persons.map((person) => {
         return (
           <div className="person-container">
-            <div>{person.first_name}</div>
-            <div>{person.last_name}</div>
+            <table>
+              <tr>
+                <td>{person.first_name}</td>
+                <td>{person.last_name}</td>
+                <td>{person.gender}</td>
+              </tr>
+            </table>
           </div>
         );
       })}

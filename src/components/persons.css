@@ -1,3 +1,29 @@
-.person-container {
+table {
+  border: 1px solid grey;
+  table-layout: fixed;
+  width: 555px;
+  border-collapse: separate;
+  border-spacing: 3px;
+}
+
+td {
+  padding: 1em;
+  border: 2px solid green;
+}
+
+.wrap {
   display: flex;
+  background: rgb(210, 230, 173);
+  width: 100%;
+  margin: 1em auto;
+}
+
+.wrap person-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  flex: 10;
+  margin: 0 1em auto;
+  background: #55da55;
 }
