@@ -42,7 +42,7 @@ export const LoginForm = () => {
                 localStorage.setItem("authorized", true);
                 localStorage.setItem("token", token);
                 history.push({
-                  pathname: "/showTable",
+                  pathname: "/table-name",
                 });
               }
             } else {

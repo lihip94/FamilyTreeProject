@@ -8,13 +8,16 @@ export const ShowTableForm = () => {
 
   useEffect(() => {
     let token = "";
+    let tree_name = "";
     if (localStorage.getItem("authorized")) {
       console.log("#################");
       console.log(localStorage.getItem("authorized"));
       console.log(localStorage.getItem("token"));
+      console.log(localStorage.getItem("tree_name"));
       token = localStorage.getItem("token");
+      tree_name = localStorage.getItem("tree_name");
     }
-    const tree_name = "Cohen";
+    //const tree_name = "Cohen";
     const userTreeInfo = { token, tree_name };
     fetch(backendService.getTreeInformation, {
       method: "POST",
