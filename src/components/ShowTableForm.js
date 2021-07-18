@@ -1,37 +1,34 @@
-import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
-import { PostTreeTable } from "../requests/PostTreeTable";
+import React, { useState, useEffect } from "react";
+import { Persons } from "./Persons";
+import { backendService } from "../utils/paths";
 
-// const userToken = "df778ef2-2af4-475a-ba73-e1db707b075f";
-const treeName = "Cohen";
+export const ShowTableForm = () => {
+  console.log("hello");
+  const [persons, setPersons] = useState([]);
 
-export function ShowTable() {
-  const [authorized, setAuthorized] = useState(false);
-  const [userToken, setUserToken] = useState("");
-  setAuthorized(localStorage.getItem("authorized"));
-  setUserToken(localStorage.getItem("token"));
-  if (!authorized) return <Redirect to="/login" />;
-  const tree_data = PostTreeTable(userToken, treeName);
-  console.log(tree_data);
-  if (tree_data.status === 200) {
-    return <div>tree_data</div>;
-  } else {
-    setAuthorized(false);
-    return <div>Hello user!</div>;
-  }
-}
-
-// function ShowTable() {
-//   const authorized = localStorage.getItem("authorized");
-
-//   if (!authorized) return <Redirect to="/login" />;
-//   console.log("11111111");
-//   const tree_data = postTreeTable(userToken, treeName).then((response) => {
-//     if (tree_data.status === 200) {
-//       return <div>tree_data</div>;
-//     }
-//     return <div>Hello user!</div>;
-//   });
-// }
-
-export default ShowTable;
+  useEffect(() => {
+    let token = "";
+    if (localStorage.getItem("authorized")) {
+      console.log("#################");
+      console.log(localStorage.getItem("authorized"));
+      console.log(localStorage.getItem("token"));
+      token = localStorage.getItem("token");
+    }
+    const tree_name = "Cohen";
+    const userTreeInfo = { token, tree_name };
+    fetch(backendService.getTreeInformation, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userTreeInfo),
+    }).then((response) =>
+      response.json().then((data) => {
+        console.log(typeof data.data);
+        console.log(data.data);
+        setPersons(data.data);
+      })
+    );
+  }, []);
+  return <> {persons.length > 0 ? <Persons persons={persons} /> : null}</>;
+};

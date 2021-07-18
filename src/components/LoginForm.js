@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Form, Input, Button } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
 import { getLogin } from "../requests/PostLogin";
-import { ShowTable } from "../requests/PostTreeTable";
 
 export let token = "";
 export const LoginForm = () => {
@@ -38,16 +37,18 @@ export const LoginForm = () => {
             console.log(userResponse.status);
             if (userResponse.status === 200) {
               if (userResponse.data) {
+                console.log(userResponse);
                 token = userResponse.data.token;
                 localStorage.setItem("authorized", true);
                 localStorage.setItem("token", token);
                 history.push({
-                  pathname: "/",
+                  pathname: "/showTable",
                 });
               }
             } else {
               setEmail("");
               setPassword("");
+              localStorage.setItem("authorized", false);
             }
           }}
         >
