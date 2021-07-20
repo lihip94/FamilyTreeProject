@@ -71,6 +71,7 @@ def add_tree(tree_name, token):
         message = "user already have tree with this name"
     else:
         db.add_to_table(TableName.TREE_TABLE, ("0", tree_name))
+        tree_id = db.get_tree_id(tree_name)
         db.add_to_table(TableName.CONNECTION_TABLE, (tree_id, email))
         status = 200
         message = "tree add successfully"
