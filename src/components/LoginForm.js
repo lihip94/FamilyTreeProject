@@ -14,7 +14,7 @@ export const LoginForm = () => {
     <div>
       <div>
         <header>
-          <b>Log in to continue to Shor</b>
+          <b>Log in to continue to Shorashim</b>
         </header>
       </div>
       <Form>
