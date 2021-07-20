@@ -13,8 +13,35 @@
   }
 }
 
+.navigation {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  background-color: rgb(9, 128, 78);
+  width: auto;
+  padding-bottom: 11px;
+}
+
+.navigation > div > a {
+  text-decoration: none;
+  text-align: center;
+  color: rgb(226, 215, 215);
+}
+
+@media all and (max-width: 2000px) {
+  .navigation {
+    justify-content: space-around;
+  }
+}
+
+@media all and (max-width: 500px) {
+  .navigation {
+    flex-direction: column;
+  }
+}
+
 .App-header {
-  background-color: #282c34;
+  background-color: #020408;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

@@ -11,56 +11,63 @@ export const LoginForm = () => {
   let history = useHistory();
 
   return (
-    <Form>
-      <Form.Field>
-        <Input
-          placeholder="email address"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="email"
-          id="email"
-          name="email"
-        />
-      </Form.Field>
-      <Form.Field>
-        <Input
-          type="password"
-          placeholder="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </Form.Field>
-      <Form.Field>
-        <Button
-          onClick={async () => {
-            if (!email || !password) {
-              setEmail("");
-              setPassword("");
-              localStorage.setItem("authorized", false);
-            } else {
-              const userResponse = await getLogin(email, password);
-              console.log(userResponse.status);
-              if (userResponse.status === 200) {
-                if (userResponse.data) {
-                  console.log(userResponse);
-                  token = userResponse.data.token;
-                  localStorage.setItem("authorized", true);
-                  localStorage.setItem("token", token);
-                  history.push({
-                    pathname: "/table-name",
-                  });
-                }
-              } else {
+    <div>
+      <div>
+        <header>
+          <b>Log in to continue to Shor</b>
+        </header>
+      </div>
+      <Form>
+        <Form.Field>
+          <Input
+            placeholder="email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            id="email"
+            name="email"
+          />
+        </Form.Field>
+        <Form.Field>
+          <Input
+            type="password"
+            placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </Form.Field>
+        <Form.Field>
+          <Button
+            onClick={async () => {
+              if (!email || !password) {
                 setEmail("");
                 setPassword("");
                 localStorage.setItem("authorized", false);
+              } else {
+                const userResponse = await getLogin(email, password);
+                console.log(userResponse.status);
+                if (userResponse.status === 200) {
+                  if (userResponse.data) {
+                    console.log(userResponse);
+                    token = userResponse.data.token;
+                    localStorage.setItem("authorized", true);
+                    localStorage.setItem("token", token);
+                    history.push({
+                      pathname: "/table-name",
+                    });
+                  }
+                } else {
+                  setEmail("");
+                  setPassword("");
+                  localStorage.setItem("authorized", false);
+                }
               }
-            }
-          }}
-        >
-          login
-        </Button>
-      </Form.Field>
-    </Form>
+            }}
+          >
+            login
+          </Button>
+        </Form.Field>
+      </Form>
+    </div>
   );
 };

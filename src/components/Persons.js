@@ -7,7 +7,7 @@ export const Persons = ({ persons }) => {
   return (
     <div>
       <div className="person-container">
-        <table>
+        <table class="center">
           <tr>
             <td>
               <b>first name</b>
@@ -24,7 +24,7 @@ export const Persons = ({ persons }) => {
       {persons.map((person) => {
         return (
           <div className="person-container">
-            <table>
+            <table class="center">
               <tr>
                 <td>{person.first_name}</td>
                 <td>{person.last_name}</td>

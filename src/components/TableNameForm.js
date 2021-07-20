@@ -9,7 +9,7 @@ export const TableNameForm = () => {
   function handleClick() {
     if (treeName) {
       localStorage.setItem("tree_name", treeName);
-      history.push("/showTable");
+      history.push("/show-table");
     }
   }
 
