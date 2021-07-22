@@ -45,10 +45,8 @@ export const LoginForm = () => {
                 localStorage.setItem("authorized", false);
               } else {
                 const userResponse = await getLogin(email, password);
-                console.log(userResponse.status);
                 if (userResponse.status === 200) {
                   if (userResponse.data) {
-                    console.log(userResponse);
                     token = userResponse.data.token;
                     localStorage.setItem("authorized", true);
                     localStorage.setItem("token", token);

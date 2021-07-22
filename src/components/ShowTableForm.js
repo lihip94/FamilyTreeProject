@@ -3,17 +3,12 @@ import { Persons } from "./Persons";
 import { backendService } from "../utils/paths";
 
 export const ShowTableForm = () => {
-  console.log("hello");
   const [persons, setPersons] = useState([]);
 
   useEffect(() => {
     let token = "";
     let tree_name = "";
     if (localStorage.getItem("authorized")) {
-      console.log("#################");
-      console.log(localStorage.getItem("authorized"));
-      console.log(localStorage.getItem("token"));
-      console.log(localStorage.getItem("tree_name"));
       token = localStorage.getItem("token");
       tree_name = localStorage.getItem("tree_name");
     }
@@ -26,8 +21,6 @@ export const ShowTableForm = () => {
       body: JSON.stringify(userTreeInfo),
     }).then((response) =>
       response.json().then((data) => {
-        console.log(typeof data.data);
-        console.log(data.data);
         setPersons(data.data);
       })
     );
